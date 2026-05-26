@@ -22,14 +22,12 @@
         .scroll-col-up {
             display: flex;
             flex-direction: column;
-            gap: 1.5rem;
             animation: scrollUp 55s linear infinite;
             will-change: transform;
         }
         .scroll-col-down {
             display: flex;
             flex-direction: column;
-            gap: 1.5rem;
             animation: scrollDown 60s linear infinite;
             will-change: transform;
         }
@@ -60,87 +58,87 @@
 <body class="bg-zinc-950 text-white min-h-screen flex flex-col justify-between relative overflow-x-hidden overflow-y-auto font-sans">
 
     <!-- 1. FOND CINÉMATIQUE (GRILLES DE DEFILLEMENT DE VISUELS) -->
-    <div class="absolute inset-0 z-0 flex gap-6 px-6 overflow-hidden pointer-events-none opacity-35 filter blur-[2px]">
+    <div class="fixed inset-0 z-0 flex justify-center gap-6 px-6 overflow-hidden pointer-events-none opacity-30 filter blur-[2px]">
         <!-- Col 1: Up -->
-        <div class="flex-1 min-w-[120px] max-w-[200px]">
+        <div class="w-32 sm:w-40 md:w-48 flex-shrink-0">
             <div class="scroll-col-up">
                 <!-- Set 1 -->
-                <img src="https://image.tmdb.org/t/p/w300/gEU21Gvw1cmjmq4b46v2R368vG3.jpg" class="rounded-xl shadow-md object-cover aspect-[2/3]" alt="Poster">
-                <img src="https://image.tmdb.org/t/p/w300/qJ2tWGBbeZpqwNDv2x51I27Gpj3.jpg" class="rounded-xl shadow-md object-cover aspect-[2/3]" alt="Poster">
-                <img src="https://image.tmdb.org/t/p/w300/czemb5f79tTyWY34rYy6B99iJc8.jpg" class="rounded-xl shadow-md object-cover aspect-[2/3]" alt="Poster">
-                <img src="https://image.tmdb.org/t/p/w300/8Gxv2wSbsysLYlhR0GZ1AFlJtZ1.jpg" class="rounded-xl shadow-md object-cover aspect-[2/3]" alt="Poster">
-                <img src="https://image.tmdb.org/t/p/w300/49WJfeN0mShN64r6gzR7ECd65qA.jpg" class="rounded-xl shadow-md object-cover aspect-[2/3]" alt="Poster">
-                <img src="https://image.tmdb.org/t/p/w300/ztkUQv651vc3iIh2p1Cj5C1GIBD.jpg" class="rounded-xl shadow-md object-cover aspect-[2/3]" alt="Poster">
+                <img src="https://image.tmdb.org/t/p/w300/f77yGBGOjainowvlGHU70CCQrjV.jpg" class="mb-6 rounded-xl shadow-md object-cover aspect-[2/3]" alt="Poster">
+                <img src="https://image.tmdb.org/t/p/w300/zR4RAnv4s6zpXhiqepdonAw4oF3.jpg" class="mb-6 rounded-xl shadow-md object-cover aspect-[2/3]" alt="Poster">
+                <img src="https://image.tmdb.org/t/p/w300/74VbBYHmpjgeES1zkRo1DwHkWnE.jpg" class="mb-6 rounded-xl shadow-md object-cover aspect-[2/3]" alt="Poster">
+                <img src="https://image.tmdb.org/t/p/w300/aSQktALDmbunDbwkuZbZFMEWVFr.jpg" class="mb-6 rounded-xl shadow-md object-cover aspect-[2/3]" alt="Poster">
+                <img src="https://image.tmdb.org/t/p/w300/wzyy8ZrsuHfAt4iz4iH3rT0tdoT.jpg" class="mb-6 rounded-xl shadow-md object-cover aspect-[2/3]" alt="Poster">
+                <img src="https://image.tmdb.org/t/p/w300/s8F6DCIX9gOMM6rv6WCGyGp6oSB.jpg" class="mb-6 rounded-xl shadow-md object-cover aspect-[2/3]" alt="Poster">
                 <!-- Set 2 (Duplicates) -->
-                <img src="https://image.tmdb.org/t/p/w300/gEU21Gvw1cmjmq4b46v2R368vG3.jpg" class="rounded-xl shadow-md object-cover aspect-[2/3]" alt="Poster">
-                <img src="https://image.tmdb.org/t/p/w300/qJ2tWGBbeZpqwNDv2x51I27Gpj3.jpg" class="rounded-xl shadow-md object-cover aspect-[2/3]" alt="Poster">
-                <img src="https://image.tmdb.org/t/p/w300/czemb5f79tTyWY34rYy6B99iJc8.jpg" class="rounded-xl shadow-md object-cover aspect-[2/3]" alt="Poster">
-                <img src="https://image.tmdb.org/t/p/w300/8Gxv2wSbsysLYlhR0GZ1AFlJtZ1.jpg" class="rounded-xl shadow-md object-cover aspect-[2/3]" alt="Poster">
-                <img src="https://image.tmdb.org/t/p/w300/49WJfeN0mShN64r6gzR7ECd65qA.jpg" class="rounded-xl shadow-md object-cover aspect-[2/3]" alt="Poster">
-                <img src="https://image.tmdb.org/t/p/w300/ztkUQv651vc3iIh2p1Cj5C1GIBD.jpg" class="rounded-xl shadow-md object-cover aspect-[2/3]" alt="Poster">
+                <img src="https://image.tmdb.org/t/p/w300/f77yGBGOjainowvlGHU70CCQrjV.jpg" class="mb-6 rounded-xl shadow-md object-cover aspect-[2/3]" alt="Poster">
+                <img src="https://image.tmdb.org/t/p/w300/zR4RAnv4s6zpXhiqepdonAw4oF3.jpg" class="mb-6 rounded-xl shadow-md object-cover aspect-[2/3]" alt="Poster">
+                <img src="https://image.tmdb.org/t/p/w300/74VbBYHmpjgeES1zkRo1DwHkWnE.jpg" class="mb-6 rounded-xl shadow-md object-cover aspect-[2/3]" alt="Poster">
+                <img src="https://image.tmdb.org/t/p/w300/aSQktALDmbunDbwkuZbZFMEWVFr.jpg" class="mb-6 rounded-xl shadow-md object-cover aspect-[2/3]" alt="Poster">
+                <img src="https://image.tmdb.org/t/p/w300/wzyy8ZrsuHfAt4iz4iH3rT0tdoT.jpg" class="mb-6 rounded-xl shadow-md object-cover aspect-[2/3]" alt="Poster">
+                <img src="https://image.tmdb.org/t/p/w300/s8F6DCIX9gOMM6rv6WCGyGp6oSB.jpg" class="mb-6 rounded-xl shadow-md object-cover aspect-[2/3]" alt="Poster">
             </div>
         </div>
         <!-- Col 2: Down -->
-        <div class="flex-1 min-w-[120px] max-w-[200px]">
+        <div class="w-32 sm:w-40 md:w-48 flex-shrink-0">
             <div class="scroll-col-down">
                 <!-- Set 1 -->
-                <img src="https://image.tmdb.org/t/p/w300/1XS1nmaHZcZ2yOI0JBgXI4R60v4.jpg" class="rounded-xl shadow-md object-cover aspect-[2/3]" alt="Poster">
-                <img src="https://image.tmdb.org/t/p/w300/bptfVGE27Tj7wLIeylzhxlhg47P.jpg" class="rounded-xl shadow-md object-cover aspect-[2/3]" alt="Poster">
-                <img src="https://image.tmdb.org/t/p/w300/f1y5CZv00w796tuz7f4P2jCzw4Z.jpg" class="rounded-xl shadow-md object-cover aspect-[2/3]" alt="Poster">
-                <img src="https://image.tmdb.org/t/p/w300/edv5CZv00w796tuz7f4P2jCzw4Z.jpg" class="rounded-xl shadow-md object-cover aspect-[2/3]" alt="Poster">
-                <img src="https://image.tmdb.org/t/p/w300/f89U3wzqrj4n61IILEwVbb8zH15.jpg" class="rounded-xl shadow-md object-cover aspect-[2/3]" alt="Poster">
-                <img src="https://image.tmdb.org/t/p/w300/kyeE2xt2JLYn42BrWeIHg9yZ47g.jpg" class="rounded-xl shadow-md object-cover aspect-[2/3]" alt="Poster">
+                <img src="https://image.tmdb.org/t/p/w300/gz64ZUKg4C4g1yfGD0o5opcBOKy.jpg" class="mb-6 rounded-xl shadow-md object-cover aspect-[2/3]" alt="Poster">
+                <img src="https://image.tmdb.org/t/p/w300/w5oW8zE7dudapyNwF8FQoQfU2Bz.jpg" class="mb-6 rounded-xl shadow-md object-cover aspect-[2/3]" alt="Poster">
+                <img src="https://image.tmdb.org/t/p/w300/iGpMm603GUKH2SiXB2S5m4sZ17t.jpg" class="mb-6 rounded-xl shadow-md object-cover aspect-[2/3]" alt="Poster">
+                <img src="https://image.tmdb.org/t/p/w300/vTIBjWMWx1p5Wv2J3IRhEW13lrj.jpg" class="mb-6 rounded-xl shadow-md object-cover aspect-[2/3]" alt="Poster">
+                <img src="https://image.tmdb.org/t/p/w300/yPkeeBEJdQO85AGCwi2XEIfMOxa.jpg" class="mb-6 rounded-xl shadow-md object-cover aspect-[2/3]" alt="Poster">
+                <img src="https://image.tmdb.org/t/p/w300/rxw7an9VWIlaEzTB4ETadMWSdym.jpg" class="mb-6 rounded-xl shadow-md object-cover aspect-[2/3]" alt="Poster">
                 <!-- Set 2 (Duplicates) -->
-                <img src="https://image.tmdb.org/t/p/w300/1XS1nmaHZcZ2yOI0JBgXI4R60v4.jpg" class="rounded-xl shadow-md object-cover aspect-[2/3]" alt="Poster">
-                <img src="https://image.tmdb.org/t/p/w300/bptfVGE27Tj7wLIeylzhxlhg47P.jpg" class="rounded-xl shadow-md object-cover aspect-[2/3]" alt="Poster">
-                <img src="https://image.tmdb.org/t/p/w300/f1y5CZv00w796tuz7f4P2jCzw4Z.jpg" class="rounded-xl shadow-md object-cover aspect-[2/3]" alt="Poster">
-                <img src="https://image.tmdb.org/t/p/w300/edv5CZv00w796tuz7f4P2jCzw4Z.jpg" class="rounded-xl shadow-md object-cover aspect-[2/3]" alt="Poster">
-                <img src="https://image.tmdb.org/t/p/w300/f89U3wzqrj4n61IILEwVbb8zH15.jpg" class="rounded-xl shadow-md object-cover aspect-[2/3]" alt="Poster">
-                <img src="https://image.tmdb.org/t/p/w300/kyeE2xt2JLYn42BrWeIHg9yZ47g.jpg" class="rounded-xl shadow-md object-cover aspect-[2/3]" alt="Poster">
+                <img src="https://image.tmdb.org/t/p/w300/gz64ZUKg4C4g1yfGD0o5opcBOKy.jpg" class="mb-6 rounded-xl shadow-md object-cover aspect-[2/3]" alt="Poster">
+                <img src="https://image.tmdb.org/t/p/w300/w5oW8zE7dudapyNwF8FQoQfU2Bz.jpg" class="mb-6 rounded-xl shadow-md object-cover aspect-[2/3]" alt="Poster">
+                <img src="https://image.tmdb.org/t/p/w300/iGpMm603GUKH2SiXB2S5m4sZ17t.jpg" class="mb-6 rounded-xl shadow-md object-cover aspect-[2/3]" alt="Poster">
+                <img src="https://image.tmdb.org/t/p/w300/vTIBjWMWx1p5Wv2J3IRhEW13lrj.jpg" class="mb-6 rounded-xl shadow-md object-cover aspect-[2/3]" alt="Poster">
+                <img src="https://image.tmdb.org/t/p/w300/yPkeeBEJdQO85AGCwi2XEIfMOxa.jpg" class="mb-6 rounded-xl shadow-md object-cover aspect-[2/3]" alt="Poster">
+                <img src="https://image.tmdb.org/t/p/w300/rxw7an9VWIlaEzTB4ETadMWSdym.jpg" class="mb-6 rounded-xl shadow-md object-cover aspect-[2/3]" alt="Poster">
             </div>
         </div>
         <!-- Col 3: Up (Hidden on mobile) -->
-        <div class="hidden md:block flex-1 min-w-[120px] max-w-[200px]">
+        <div class="hidden md:block w-32 sm:w-40 md:w-48 flex-shrink-0">
             <div class="scroll-col-up">
                 <!-- Set 1 -->
-                <img src="https://image.tmdb.org/t/p/w300/8Gxv2wSbsysLYlhR0GZ1AFlJtZ1.jpg" class="rounded-xl shadow-md object-cover aspect-[2/3]" alt="Poster">
-                <img src="https://image.tmdb.org/t/p/w300/ztkUQv651vc3iIh2p1Cj5C1GIBD.jpg" class="rounded-xl shadow-md object-cover aspect-[2/3]" alt="Poster">
-                <img src="https://image.tmdb.org/t/p/w300/gEU21Gvw1cmjmq4b46v2R368vG3.jpg" class="rounded-xl shadow-md object-cover aspect-[2/3]" alt="Poster">
-                <img src="https://image.tmdb.org/t/p/w300/1XS1nmaHZcZ2yOI0JBgXI4R60v4.jpg" class="rounded-xl shadow-md object-cover aspect-[2/3]" alt="Poster">
-                <img src="https://image.tmdb.org/t/p/w300/edv5CZv00w796tuz7f4P2jCzw4Z.jpg" class="rounded-xl shadow-md object-cover aspect-[2/3]" alt="Poster">
-                <img src="https://image.tmdb.org/t/p/w300/czemb5f79tTyWY34rYy6B99iJc8.jpg" class="rounded-xl shadow-md object-cover aspect-[2/3]" alt="Poster">
+                <img src="https://image.tmdb.org/t/p/w300/iQoIGnmrt8rzDDRC6el8HLvHvKf.jpg" class="mb-6 rounded-xl shadow-md object-cover aspect-[2/3]" alt="Poster">
+                <img src="https://image.tmdb.org/t/p/w300/55lEECwWtRWltEa6u3TbiljaoOd.jpg" class="mb-6 rounded-xl shadow-md object-cover aspect-[2/3]" alt="Poster">
+                <img src="https://image.tmdb.org/t/p/w300/iCvucorbs3hFqWshDbLe0fHzB71.jpg" class="mb-6 rounded-xl shadow-md object-cover aspect-[2/3]" alt="Poster">
+                <img src="https://image.tmdb.org/t/p/w300/kG3N8oQ10qiw2MsnSHFGJpQNyEy.jpg" class="mb-6 rounded-xl shadow-md object-cover aspect-[2/3]" alt="Poster">
+                <img src="https://image.tmdb.org/t/p/w300/t1PFVsGYdUHtPv0Xowoc9b4PAap.jpg" class="mb-6 rounded-xl shadow-md object-cover aspect-[2/3]" alt="Poster">
+                <img src="https://image.tmdb.org/t/p/w300/7NrvUI3vnW8H3rD7ExKcTL7KRcQ.jpg" class="mb-6 rounded-xl shadow-md object-cover aspect-[2/3]" alt="Poster">
                 <!-- Set 2 (Duplicates) -->
-                <img src="https://image.tmdb.org/t/p/w300/8Gxv2wSbsysLYlhR0GZ1AFlJtZ1.jpg" class="rounded-xl shadow-md object-cover aspect-[2/3]" alt="Poster">
-                <img src="https://image.tmdb.org/t/p/w300/ztkUQv651vc3iIh2p1Cj5C1GIBD.jpg" class="rounded-xl shadow-md object-cover aspect-[2/3]" alt="Poster">
-                <img src="https://image.tmdb.org/t/p/w300/gEU21Gvw1cmjmq4b46v2R368vG3.jpg" class="rounded-xl shadow-md object-cover aspect-[2/3]" alt="Poster">
-                <img src="https://image.tmdb.org/t/p/w300/1XS1nmaHZcZ2yOI0JBgXI4R60v4.jpg" class="rounded-xl shadow-md object-cover aspect-[2/3]" alt="Poster">
-                <img src="https://image.tmdb.org/t/p/w300/edv5CZv00w796tuz7f4P2jCzw4Z.jpg" class="rounded-xl shadow-md object-cover aspect-[2/3]" alt="Poster">
-                <img src="https://image.tmdb.org/t/p/w300/czemb5f79tTyWY34rYy6B99iJc8.jpg" class="rounded-xl shadow-md object-cover aspect-[2/3]" alt="Poster">
+                <img src="https://image.tmdb.org/t/p/w300/iQoIGnmrt8rzDDRC6el8HLvHvKf.jpg" class="mb-6 rounded-xl shadow-md object-cover aspect-[2/3]" alt="Poster">
+                <img src="https://image.tmdb.org/t/p/w300/55lEECwWtRWltEa6u3TbiljaoOd.jpg" class="mb-6 rounded-xl shadow-md object-cover aspect-[2/3]" alt="Poster">
+                <img src="https://image.tmdb.org/t/p/w300/iCvucorbs3hFqWshDbLe0fHzB71.jpg" class="mb-6 rounded-xl shadow-md object-cover aspect-[2/3]" alt="Poster">
+                <img src="https://image.tmdb.org/t/p/w300/kG3N8oQ10qiw2MsnSHFGJpQNyEy.jpg" class="mb-6 rounded-xl shadow-md object-cover aspect-[2/3]" alt="Poster">
+                <img src="https://image.tmdb.org/t/p/w300/t1PFVsGYdUHtPv0Xowoc9b4PAap.jpg" class="mb-6 rounded-xl shadow-md object-cover aspect-[2/3]" alt="Poster">
+                <img src="https://image.tmdb.org/t/p/w300/7NrvUI3vnW8H3rD7ExKcTL7KRcQ.jpg" class="mb-6 rounded-xl shadow-md object-cover aspect-[2/3]" alt="Poster">
             </div>
         </div>
         <!-- Col 4: Down (Hidden on desktop/tablet) -->
-        <div class="hidden lg:block flex-1 min-w-[120px] max-w-[200px]">
+        <div class="hidden lg:block w-32 sm:w-40 md:w-48 flex-shrink-0">
             <div class="scroll-col-down">
                 <!-- Set 1 -->
-                <img src="https://image.tmdb.org/t/p/w300/qJ2tWGBbeZpqwNDv2x51I27Gpj3.jpg" class="rounded-xl shadow-md object-cover aspect-[2/3]" alt="Poster">
-                <img src="https://image.tmdb.org/t/p/w300/kyeE2xt2JLYn42BrWeIHg9yZ47g.jpg" class="rounded-xl shadow-md object-cover aspect-[2/3]" alt="Poster">
-                <img src="https://image.tmdb.org/t/p/w300/49WJfeN0mShN64r6gzR7ECd65qA.jpg" class="rounded-xl shadow-md object-cover aspect-[2/3]" alt="Poster">
-                <img src="https://image.tmdb.org/t/p/w300/bptfVGE27Tj7wLIeylzhxlhg47P.jpg" class="rounded-xl shadow-md object-cover aspect-[2/3]" alt="Poster">
-                <img src="https://image.tmdb.org/t/p/w300/f1y5CZv00w796tuz7f4P2jCzw4Z.jpg" class="rounded-xl shadow-md object-cover aspect-[2/3]" alt="Poster">
-                <img src="https://image.tmdb.org/t/p/w300/f89U3wzqrj4n61IILEwVbb8zH15.jpg" class="rounded-xl shadow-md object-cover aspect-[2/3]" alt="Poster">
+                <img src="https://image.tmdb.org/t/p/w300/f77yGBGOjainowvlGHU70CCQrjV.jpg" class="mb-6 rounded-xl shadow-md object-cover aspect-[2/3]" alt="Poster">
+                <img src="https://image.tmdb.org/t/p/w300/iQoIGnmrt8rzDDRC6el8HLvHvKf.jpg" class="mb-6 rounded-xl shadow-md object-cover aspect-[2/3]" alt="Poster">
+                <img src="https://image.tmdb.org/t/p/w300/gz64ZUKg4C4g1yfGD0o5opcBOKy.jpg" class="mb-6 rounded-xl shadow-md object-cover aspect-[2/3]" alt="Poster">
+                <img src="https://image.tmdb.org/t/p/w300/zR4RAnv4s6zpXhiqepdonAw4oF3.jpg" class="mb-6 rounded-xl shadow-md object-cover aspect-[2/3]" alt="Poster">
+                <img src="https://image.tmdb.org/t/p/w300/yPkeeBEJdQO85AGCwi2XEIfMOxa.jpg" class="mb-6 rounded-xl shadow-md object-cover aspect-[2/3]" alt="Poster">
+                <img src="https://image.tmdb.org/t/p/w300/wzyy8ZrsuHfAt4iz4iH3rT0tdoT.jpg" class="mb-6 rounded-xl shadow-md object-cover aspect-[2/3]" alt="Poster">
                 <!-- Set 2 (Duplicates) -->
-                <img src="https://image.tmdb.org/t/p/w300/qJ2tWGBbeZpqwNDv2x51I27Gpj3.jpg" class="rounded-xl shadow-md object-cover aspect-[2/3]" alt="Poster">
-                <img src="https://image.tmdb.org/t/p/w300/kyeE2xt2JLYn42BrWeIHg9yZ47g.jpg" class="rounded-xl shadow-md object-cover aspect-[2/3]" alt="Poster">
-                <img src="https://image.tmdb.org/t/p/w300/49WJfeN0mShN64r6gzR7ECd65qA.jpg" class="rounded-xl shadow-md object-cover aspect-[2/3]" alt="Poster">
-                <img src="https://image.tmdb.org/t/p/w300/bptfVGE27Tj7wLIeylzhxlhg47P.jpg" class="rounded-xl shadow-md object-cover aspect-[2/3]" alt="Poster">
-                <img src="https://image.tmdb.org/t/p/w300/f1y5CZv00w796tuz7f4P2jCzw4Z.jpg" class="rounded-xl shadow-md object-cover aspect-[2/3]" alt="Poster">
-                <img src="https://image.tmdb.org/t/p/w300/f89U3wzqrj4n61IILEwVbb8zH15.jpg" class="rounded-xl shadow-md object-cover aspect-[2/3]" alt="Poster">
+                <img src="https://image.tmdb.org/t/p/w300/f77yGBGOjainowvlGHU70CCQrjV.jpg" class="mb-6 rounded-xl shadow-md object-cover aspect-[2/3]" alt="Poster">
+                <img src="https://image.tmdb.org/t/p/w300/iQoIGnmrt8rzDDRC6el8HLvHvKf.jpg" class="mb-6 rounded-xl shadow-md object-cover aspect-[2/3]" alt="Poster">
+                <img src="https://image.tmdb.org/t/p/w300/gz64ZUKg4C4g1yfGD0o5opcBOKy.jpg" class="mb-6 rounded-xl shadow-md object-cover aspect-[2/3]" alt="Poster">
+                <img src="https://image.tmdb.org/t/p/w300/zR4RAnv4s6zpXhiqepdonAw4oF3.jpg" class="mb-6 rounded-xl shadow-md object-cover aspect-[2/3]" alt="Poster">
+                <img src="https://image.tmdb.org/t/p/w300/yPkeeBEJdQO85AGCwi2XEIfMOxa.jpg" class="mb-6 rounded-xl shadow-md object-cover aspect-[2/3]" alt="Poster">
+                <img src="https://image.tmdb.org/t/p/w300/wzyy8ZrsuHfAt4iz4iH3rT0tdoT.jpg" class="mb-6 rounded-xl shadow-md object-cover aspect-[2/3]" alt="Poster">
             </div>
         </div>
     </div>
 
     <!-- Filtre radial sombre + Blur de fondu -->
-    <div class="absolute inset-0 z-1 backdrop-blur-[6px] pointer-events-none" style="background: radial-gradient(circle, rgba(9, 9, 11, 0.45) 0%, rgba(9, 9, 11, 0.95) 90%);"></div>
+    <div class="fixed inset-0 z-1 backdrop-blur-[6px] pointer-events-none" style="background: radial-gradient(circle, rgba(9, 9, 11, 0.45) 0%, rgba(9, 9, 11, 0.95) 90%);"></div>
 
     <!-- 2. HEADER BRAND -->
     <header class="w-full max-w-7xl mx-auto px-6 py-6 flex items-center justify-between relative z-10">
@@ -332,7 +330,7 @@
 
         // Analyse de l'URL pour le code de jumelage TV
         const urlParams = new URLSearchParams(window.location.search);
-        const tvCode = (urlParams.get('code') || "").trim().toUpperCase();
+        let tvCode = (urlParams.get('code') || localStorage.getItem("pending_tv_code") || "").trim().toUpperCase();
 
         let currentFlow = "login"; // "login" | "register" | "reset"
 
@@ -364,7 +362,24 @@
                 document.getElementById('session-email').innerText = session.user.email;
 
                 if (tvCode) {
-                    document.getElementById('session-pairing-actions').classList.remove('hidden');
+                    if (localStorage.getItem("pending_tv_code") === tvCode) {
+                        localStorage.removeItem("pending_tv_code");
+                        showStatus("Connexion réussie, jumelage en cours...", "bg-zinc-900/60 text-zinc-300 border-zinc-800");
+                        try {
+                            await pairDevice(session, session.user.id, session.user.email);
+                            showStatus("✓ TV connectée avec succès ! Tu peux fermer cette page.", "bg-green-950/80 text-green-400 border-green-900/50");
+                            setTimeout(() => {
+                                window.history.replaceState({}, document.title, window.location.pathname);
+                                tvCode = "";
+                                initUi();
+                                checkSession();
+                            }, 3000);
+                        } catch (err) {
+                            showStatus(err.message || "Le jumelage a échoué.", "bg-red-950/70 text-red-400 border-red-900/50");
+                        }
+                    } else {
+                        document.getElementById('session-pairing-actions').classList.remove('hidden');
+                    }
                 } else {
                     document.getElementById('session-pairing-actions').classList.add('hidden');
                 }
@@ -507,15 +522,15 @@
             setBusy(true);
             hideStatus();
             try {
-                // Construit l'URL de redirection incluant le code TV si présent
-                const redirectToUrl = tvCode 
-                    ? `${window.location.origin}?code=${tvCode}`
-                    : window.location.origin;
-
+                if (tvCode) {
+                    localStorage.setItem("pending_tv_code", tvCode);
+                }
+                const targetRedirectUrl = window.location.origin + window.location.pathname;
+                console.log("OAuth Redirect Target URL:", targetRedirectUrl);
                 const { error } = await supabaseClient.auth.signInWithOAuth({
                     provider: 'google',
                     options: {
-                        redirectTo: redirectToUrl
+                        redirectTo: targetRedirectUrl
                     }
                 });
                 if (error) throw error;
@@ -527,60 +542,40 @@
 
         // Jumelage de l'appareil (TV)
         async function pairDevice(session, userId, email) {
-            // Option 1 : Tente d'appeler l'Edge Function d'approbation (tv-auth-approve)
-            try {
-                const resp = await fetch(`${SUPABASE_URL}/functions/v1/tv-auth-approve`, {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                        apikey: SUPABASE_ANON_KEY,
-                        Authorization: `Bearer ${session.access_token}`,
-                    },
-                    body: JSON.stringify({ code: tvCode, refresh_token: session.refresh_token }),
-                });
-                if (resp.ok) return true;
-            } catch (e) {
-                console.warn("Échec d'appairage via l'Edge Function, essai de mise à jour directe...", e);
+            console.log("Starting pairDevice. Session status:", !!session);
+            if (!session) {
+                throw new Error("Session invalide. Veuillez vous reconnecter.");
             }
 
-            // Option 2 : Écriture directe dans la table tv_pairings
-            try {
-                const { error: pError } = await supabaseClient
-                    .from('tv_pairings')
-                    .update({ 
-                        user_id: userId, 
-                        status: 'approved',
-                        approved_at: new Date().toISOString(),
-                        user_email: email,
-                        access_token: session.access_token,
-                        refresh_token: session.refresh_token
-                    })
-                    .eq('user_code', tvCode);
-                if (!pError) return true;
-            } catch (e) {
-                console.warn("Échec de mise à jour de tv_pairings", e);
+            const tokenToSend = session.access_token;
+            const refreshToSend = session.refresh_token || "";
+            console.log("Tokens for pairing - Access Token length:", tokenToSend?.length, "Refresh Token length:", refreshToSend?.length);
+            if (!refreshToSend) {
+                console.warn("Warning: session.refresh_token is missing! We will send an empty string, the edge function status checks should handle this.");
             }
 
-            // Option 3 : Écriture directe dans la table tv_device_auth_sessions
-            try {
-                const { error: sError } = await supabaseClient
-                    .from('tv_device_auth_sessions')
-                    .update({ 
-                        user_id: userId, 
-                        status: 'approved',
-                        approved_at: new Date().toISOString(),
-                        user_email: email,
-                        access_token: session.access_token,
-                        refresh_token: session.refresh_token
-                    })
-                    .eq('user_code', tvCode);
-                if (!sError) return true;
-                throw sError;
-            } catch (e) {
-                console.error("Tous les canaux de jumelage ont échoué", e);
-            }
+            // Utilise uniquement l'Edge Function tv-auth-approve qui est le seul canal sécurisé.
+            // Les écritures directes échoueront silencieusement en raison des politiques RLS restrictives.
+            const resp = await fetch(`${SUPABASE_URL}/functions/v1/tv-auth-approve`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    apikey: SUPABASE_ANON_KEY,
+                    Authorization: `Bearer ${tokenToSend}`,
+                },
+                body: JSON.stringify({ 
+                    code: tvCode, 
+                    refresh_token: refreshToSend 
+                }),
+            });
 
-            throw new Error("Le code de jumelage TV est invalide ou expiré.");
+            const json = await resp.json().catch(() => ({}));
+            if (!resp.ok) {
+                console.error("Pairing API error response:", json);
+                throw new Error(json.error || "Le code de jumelage TV est invalide ou expiré.");
+            }
+            console.log("Pairing API success response:", json);
+            return true;
         }
 
         // Confirmer le jumelage si déjà connecté
