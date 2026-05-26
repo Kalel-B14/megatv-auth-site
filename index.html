@@ -3,72 +3,625 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MegaTv - Jumelage Appareil</title>
+    <title>MegaTv - Cloud & Jumelage</title>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <style>
+        @keyframes scrollUp {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(-50%); }
+        }
+        @keyframes scrollDown {
+            0% { transform: translateY(-50%); }
+            100% { transform: translateY(0); }
+        }
+        @keyframes marquee {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+        .scroll-col-up {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            animation: scrollUp 55s linear infinite;
+        }
+        .scroll-col-down {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            animation: scrollDown 60s linear infinite;
+        }
+        .marquee-inner {
+            display: flex;
+            width: max-content;
+            animation: marquee 35s linear infinite;
+        }
+        .marquee-inner:hover {
+            animation-play-state: paused;
+        }
+        /* Custom scrollbars */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(9, 9, 11, 0.5);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 999px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+    </style>
 </head>
-<body class="bg-zinc-950 text-white flex flex-col items-center justify-center min-h-screen p-4">
+<body class="bg-zinc-950 text-white min-h-screen flex flex-col justify-between relative overflow-hidden font-sans select-none">
 
-    <div class="w-full max-w-md bg-zinc-900 border border-zinc-800 p-8 rounded-3xl shadow-2xl text-center">
-        <h1 class="text-3xl font-black tracking-tight mb-2 bg-gradient-to-r from-white to-zinc-400 bg-clip-text text-transparent">MegaTv Cloud</h1>
-        <p class="text-zinc-400 text-sm mb-6">Entre tes identifiants pour connecter ta TV</p>
-
-        <div id="auth-form" class="space-y-4">
-            <input type="email" id="email" placeholder="Adresse Email" class="w-full px-5 py-3 rounded-full bg-zinc-950 border border-zinc-800 focus:border-white focus:outline-none transition text-sm">
-            <input type="password" id="password" placeholder="Mot de passe" class="w-full px-5 py-3 rounded-full bg-zinc-950 border border-zinc-800 focus:border-white focus:outline-none transition text-sm">
-            <button onclick="handleLogin()" class="w-full py-3 mt-2 rounded-full bg-white text-black font-bold text-sm hover:bg-zinc-200 transition duration-300">Se connecter et jumeler</button>
+    <!-- 1. FOND CINÉMATIQUE (GRILLES DE DEFILLEMENT DE VISUELS) -->
+    <div class="absolute inset-0 z-0 flex gap-6 px-6 overflow-hidden pointer-events-none opacity-15 filter blur-[3px]">
+        <!-- Col 1: Up -->
+        <div class="flex-1 min-w-[120px] max-w-[200px]">
+            <div class="scroll-col-up">
+                <!-- Set 1 -->
+                <img src="https://image.tmdb.org/t/p/w300/gEU21Gvw1cmjmq4b46v2R368vG3.jpg" class="rounded-xl shadow-md object-cover aspect-[2/3]" alt="Poster">
+                <img src="https://image.tmdb.org/t/p/w300/qJ2tWGBbeZpqwNDv2x51I27Gpj3.jpg" class="rounded-xl shadow-md object-cover aspect-[2/3]" alt="Poster">
+                <img src="https://image.tmdb.org/t/p/w300/czemb5f79tTyWY34rYy6B99iJc8.jpg" class="rounded-xl shadow-md object-cover aspect-[2/3]" alt="Poster">
+                <img src="https://image.tmdb.org/t/p/w300/8Gxv2wSbsysLYlhR0GZ1AFlJtZ1.jpg" class="rounded-xl shadow-md object-cover aspect-[2/3]" alt="Poster">
+                <img src="https://image.tmdb.org/t/p/w300/49WJfeN0mShN64r6gzR7ECd65qA.jpg" class="rounded-xl shadow-md object-cover aspect-[2/3]" alt="Poster">
+                <img src="https://image.tmdb.org/t/p/w300/ztkUQv651vc3iIh2p1Cj5C1GIBD.jpg" class="rounded-xl shadow-md object-cover aspect-[2/3]" alt="Poster">
+                <!-- Set 2 (Duplicates) -->
+                <img src="https://image.tmdb.org/t/p/w300/gEU21Gvw1cmjmq4b46v2R368vG3.jpg" class="rounded-xl shadow-md object-cover aspect-[2/3]" alt="Poster">
+                <img src="https://image.tmdb.org/t/p/w300/qJ2tWGBbeZpqwNDv2x51I27Gpj3.jpg" class="rounded-xl shadow-md object-cover aspect-[2/3]" alt="Poster">
+                <img src="https://image.tmdb.org/t/p/w300/czemb5f79tTyWY34rYy6B99iJc8.jpg" class="rounded-xl shadow-md object-cover aspect-[2/3]" alt="Poster">
+                <img src="https://image.tmdb.org/t/p/w300/8Gxv2wSbsysLYlhR0GZ1AFlJtZ1.jpg" class="rounded-xl shadow-md object-cover aspect-[2/3]" alt="Poster">
+                <img src="https://image.tmdb.org/t/p/w300/49WJfeN0mShN64r6gzR7ECd65qA.jpg" class="rounded-xl shadow-md object-cover aspect-[2/3]" alt="Poster">
+                <img src="https://image.tmdb.org/t/p/w300/ztkUQv651vc3iIh2p1Cj5C1GIBD.jpg" class="rounded-xl shadow-md object-cover aspect-[2/3]" alt="Poster">
+            </div>
         </div>
-
-        <div id="status-message" class="hidden mt-4 text-sm font-semibold p-3 rounded-full"></div>
+        <!-- Col 2: Down -->
+        <div class="flex-1 min-w-[120px] max-w-[200px]">
+            <div class="scroll-col-down">
+                <!-- Set 1 -->
+                <img src="https://image.tmdb.org/t/p/w300/1XS1nmaHZcZ2yOI0JBgXI4R60v4.jpg" class="rounded-xl shadow-md object-cover aspect-[2/3]" alt="Poster">
+                <img src="https://image.tmdb.org/t/p/w300/bptfVGE27Tj7wLIeylzhxlhg47P.jpg" class="rounded-xl shadow-md object-cover aspect-[2/3]" alt="Poster">
+                <img src="https://image.tmdb.org/t/p/w300/f1y5CZv00w796tuz7f4P2jCzw4Z.jpg" class="rounded-xl shadow-md object-cover aspect-[2/3]" alt="Poster">
+                <img src="https://image.tmdb.org/t/p/w300/edv5CZv00w796tuz7f4P2jCzw4Z.jpg" class="rounded-xl shadow-md object-cover aspect-[2/3]" alt="Poster">
+                <img src="https://image.tmdb.org/t/p/w300/f89U3wzqrj4n61IILEwVbb8zH15.jpg" class="rounded-xl shadow-md object-cover aspect-[2/3]" alt="Poster">
+                <img src="https://image.tmdb.org/t/p/w300/kyeE2xt2JLYn42BrWeIHg9yZ47g.jpg" class="rounded-xl shadow-md object-cover aspect-[2/3]" alt="Poster">
+                <!-- Set 2 (Duplicates) -->
+                <img src="https://image.tmdb.org/t/p/w300/1XS1nmaHZcZ2yOI0JBgXI4R60v4.jpg" class="rounded-xl shadow-md object-cover aspect-[2/3]" alt="Poster">
+                <img src="https://image.tmdb.org/t/p/w300/bptfVGE27Tj7wLIeylzhxlhg47P.jpg" class="rounded-xl shadow-md object-cover aspect-[2/3]" alt="Poster">
+                <img src="https://image.tmdb.org/t/p/w300/f1y5CZv00w796tuz7f4P2jCzw4Z.jpg" class="rounded-xl shadow-md object-cover aspect-[2/3]" alt="Poster">
+                <img src="https://image.tmdb.org/t/p/w300/edv5CZv00w796tuz7f4P2jCzw4Z.jpg" class="rounded-xl shadow-md object-cover aspect-[2/3]" alt="Poster">
+                <img src="https://image.tmdb.org/t/p/w300/f89U3wzqrj4n61IILEwVbb8zH15.jpg" class="rounded-xl shadow-md object-cover aspect-[2/3]" alt="Poster">
+                <img src="https://image.tmdb.org/t/p/w300/kyeE2xt2JLYn42BrWeIHg9yZ47g.jpg" class="rounded-xl shadow-md object-cover aspect-[2/3]" alt="Poster">
+            </div>
+        </div>
+        <!-- Col 3: Up (Hidden on mobile) -->
+        <div class="hidden md:block flex-1 min-w-[120px] max-w-[200px]">
+            <div class="scroll-col-up">
+                <!-- Set 1 -->
+                <img src="https://image.tmdb.org/t/p/w300/8Gxv2wSbsysLYlhR0GZ1AFlJtZ1.jpg" class="rounded-xl shadow-md object-cover aspect-[2/3]" alt="Poster">
+                <img src="https://image.tmdb.org/t/p/w300/ztkUQv651vc3iIh2p1Cj5C1GIBD.jpg" class="rounded-xl shadow-md object-cover aspect-[2/3]" alt="Poster">
+                <img src="https://image.tmdb.org/t/p/w300/gEU21Gvw1cmjmq4b46v2R368vG3.jpg" class="rounded-xl shadow-md object-cover aspect-[2/3]" alt="Poster">
+                <img src="https://image.tmdb.org/t/p/w300/1XS1nmaHZcZ2yOI0JBgXI4R60v4.jpg" class="rounded-xl shadow-md object-cover aspect-[2/3]" alt="Poster">
+                <img src="https://image.tmdb.org/t/p/w300/edv5CZv00w796tuz7f4P2jCzw4Z.jpg" class="rounded-xl shadow-md object-cover aspect-[2/3]" alt="Poster">
+                <img src="https://image.tmdb.org/t/p/w300/czemb5f79tTyWY34rYy6B99iJc8.jpg" class="rounded-xl shadow-md object-cover aspect-[2/3]" alt="Poster">
+                <!-- Set 2 (Duplicates) -->
+                <img src="https://image.tmdb.org/t/p/w300/8Gxv2wSbsysLYlhR0GZ1AFlJtZ1.jpg" class="rounded-xl shadow-md object-cover aspect-[2/3]" alt="Poster">
+                <img src="https://image.tmdb.org/t/p/w300/ztkUQv651vc3iIh2p1Cj5C1GIBD.jpg" class="rounded-xl shadow-md object-cover aspect-[2/3]" alt="Poster">
+                <img src="https://image.tmdb.org/t/p/w300/gEU21Gvw1cmjmq4b46v2R368vG3.jpg" class="rounded-xl shadow-md object-cover aspect-[2/3]" alt="Poster">
+                <img src="https://image.tmdb.org/t/p/w300/1XS1nmaHZcZ2yOI0JBgXI4R60v4.jpg" class="rounded-xl shadow-md object-cover aspect-[2/3]" alt="Poster">
+                <img src="https://image.tmdb.org/t/p/w300/edv5CZv00w796tuz7f4P2jCzw4Z.jpg" class="rounded-xl shadow-md object-cover aspect-[2/3]" alt="Poster">
+                <img src="https://image.tmdb.org/t/p/w300/czemb5f79tTyWY34rYy6B99iJc8.jpg" class="rounded-xl shadow-md object-cover aspect-[2/3]" alt="Poster">
+            </div>
+        </div>
+        <!-- Col 4: Down (Hidden on desktop/tablet) -->
+        <div class="hidden lg:block flex-1 min-w-[120px] max-w-[200px]">
+            <div class="scroll-col-down">
+                <!-- Set 1 -->
+                <img src="https://image.tmdb.org/t/p/w300/qJ2tWGBbeZpqwNDv2x51I27Gpj3.jpg" class="rounded-xl shadow-md object-cover aspect-[2/3]" alt="Poster">
+                <img src="https://image.tmdb.org/t/p/w300/kyeE2xt2JLYn42BrWeIHg9yZ47g.jpg" class="rounded-xl shadow-md object-cover aspect-[2/3]" alt="Poster">
+                <img src="https://image.tmdb.org/t/p/w300/49WJfeN0mShN64r6gzR7ECd65qA.jpg" class="rounded-xl shadow-md object-cover aspect-[2/3]" alt="Poster">
+                <img src="https://image.tmdb.org/t/p/w300/bptfVGE27Tj7wLIeylzhxlhg47P.jpg" class="rounded-xl shadow-md object-cover aspect-[2/3]" alt="Poster">
+                <img src="https://image.tmdb.org/t/p/w300/f1y5CZv00w796tuz7f4P2jCzw4Z.jpg" class="rounded-xl shadow-md object-cover aspect-[2/3]" alt="Poster">
+                <img src="https://image.tmdb.org/t/p/w300/f89U3wzqrj4n61IILEwVbb8zH15.jpg" class="rounded-xl shadow-md object-cover aspect-[2/3]" alt="Poster">
+                <!-- Set 2 (Duplicates) -->
+                <img src="https://image.tmdb.org/t/p/w300/qJ2tWGBbeZpqwNDv2x51I27Gpj3.jpg" class="rounded-xl shadow-md object-cover aspect-[2/3]" alt="Poster">
+                <img src="https://image.tmdb.org/t/p/w300/kyeE2xt2JLYn42BrWeIHg9yZ47g.jpg" class="rounded-xl shadow-md object-cover aspect-[2/3]" alt="Poster">
+                <img src="https://image.tmdb.org/t/p/w300/49WJfeN0mShN64r6gzR7ECd65qA.jpg" class="rounded-xl shadow-md object-cover aspect-[2/3]" alt="Poster">
+                <img src="https://image.tmdb.org/t/p/w300/bptfVGE27Tj7wLIeylzhxlhg47P.jpg" class="rounded-xl shadow-md object-cover aspect-[2/3]" alt="Poster">
+                <img src="https://image.tmdb.org/t/p/w300/f1y5CZv00w796tuz7f4P2jCzw4Z.jpg" class="rounded-xl shadow-md object-cover aspect-[2/3]" alt="Poster">
+                <img src="https://image.tmdb.org/t/p/w300/f89U3wzqrj4n61IILEwVbb8zH15.jpg" class="rounded-xl shadow-md object-cover aspect-[2/3]" alt="Poster">
+            </div>
+        </div>
     </div>
 
+    <!-- Filtre radial sombre + Blur de fondu -->
+    <div class="absolute inset-0 bg-radial from-zinc-950/70 via-zinc-950/92 to-zinc-950 z-1 backdrop-blur-[6px] pointer-events-none"></div>
+
+    <!-- 2. HEADER BRAND -->
+    <header class="w-full max-w-7xl mx-auto px-6 py-6 flex items-center justify-between relative z-10">
+        <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-white to-zinc-500 flex items-center justify-center font-black text-black shadow-lg shadow-white/10 text-lg">M</div>
+            <span class="text-xl font-black tracking-tight text-white">MegaTv <span class="text-zinc-500 font-medium text-xs border border-zinc-800 px-2 py-0.5 rounded-full ml-1 bg-zinc-900/60">Cloud</span></span>
+        </div>
+    </header>
+
+    <!-- 3. ZONE CENTRALE DE CONTENU -->
+    <main class="w-full max-w-7xl mx-auto px-6 flex items-center justify-center flex-1 relative z-10 py-6">
+        <div class="w-full flex flex-col lg:flex-row items-center gap-12 lg:gap-16">
+            
+            <!-- Colonne Gauche : Description de l'app et Arguments clés -->
+            <div class="flex-1 text-center lg:text-left space-y-6 lg:max-w-xl">
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-zinc-900/80 border border-zinc-800 text-zinc-400 text-xs font-semibold">
+                    <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span> Service Actif
+                </div>
+                <h2 class="text-4xl sm:text-5xl font-black tracking-tight leading-none bg-gradient-to-r from-white via-zinc-200 to-zinc-500 bg-clip-text text-transparent">
+                    Votre cinéma,<br>partout avec vous.
+                </h2>
+                <p class="text-zinc-400 text-sm sm:text-base leading-relaxed">
+                    MegaTv Cloud sauvegarde intelligemment vos préférences et synchronise votre expérience multimédia en temps réel. Connectez vos appareils en scannant un simple code.
+                </p>
+
+                <!-- Arguments de valeur visuels -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-4 text-left">
+                    <div class="flex items-center gap-3 p-3 rounded-2xl bg-zinc-900/40 border border-zinc-900">
+                        <span class="text-xl">🔄</span>
+                        <div>
+                            <h4 class="text-white text-xs font-bold">Synchro instantanée</h4>
+                            <p class="text-[10px] text-zinc-500">Reprenez la lecture sur n'importe quel écran.</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-3 p-3 rounded-2xl bg-zinc-900/40 border border-zinc-900">
+                        <span class="text-xl">👥</span>
+                        <div>
+                            <h4 class="text-white text-xs font-bold">Multi-Profils</h4>
+                            <p class="text-[10px] text-zinc-500">Préférences et codes PIN individuels.</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-3 p-3 rounded-2xl bg-zinc-900/40 border border-zinc-900">
+                        <span class="text-xl">⭐</span>
+                        <div>
+                            <h4 class="text-white text-xs font-bold">Favoris & Filtres</h4>
+                            <p class="text-[10px] text-zinc-500">Sauvegarde automatique de vos listes.</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-3 p-3 rounded-2xl bg-zinc-900/40 border border-zinc-900">
+                        <span class="text-xl">🛠️</span>
+                        <div>
+                            <h4 class="text-white text-xs font-bold">Addons Cloud</h4>
+                            <p class="text-[10px] text-zinc-500">Installez et configurez une fois pour toutes.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Colonne Droite : Formulaire d'authentification et de Jumelage -->
+            <div class="w-full max-w-md bg-zinc-900/70 border border-zinc-800/80 backdrop-blur-xl p-8 rounded-3xl shadow-2xl relative">
+                
+                <!-- En-tête de jumelage en cas de présence de code de TV dans l'URL -->
+                <div id="pairing-header" class="hidden mb-6 p-4 rounded-2xl bg-gradient-to-tr from-zinc-800 to-zinc-900 border border-zinc-700/50 flex items-center justify-between">
+                    <div class="flex items-center gap-3">
+                        <span class="text-2xl animate-pulse">📺</span>
+                        <div class="text-left">
+                            <h4 class="text-xs font-bold text-white">Jumelage TV initié</h4>
+                            <p class="text-[10px] text-zinc-400">Votre TV sera liée après authentification</p>
+                        </div>
+                    </div>
+                    <span id="display-pair-code" class="px-3 py-1 bg-white text-black font-black text-xs rounded-full font-mono tracking-widest">-</span>
+                </div>
+
+                <!-- A. Formulaire de connexion et inscription (Hors Session) -->
+                <div id="auth-flow" class="space-y-6">
+                    <!-- Onglets (Connexion / Inscription) -->
+                    <div class="flex p-1 bg-zinc-950/80 border border-zinc-800 rounded-full">
+                        <button onclick="switchTab('login')" id="tab-login" class="flex-1 py-2 rounded-full text-xs font-bold transition duration-200 bg-white text-black">
+                            Connexion
+                        </button>
+                        <button onclick="switchTab('register')" id="tab-register" class="flex-1 py-2 rounded-full text-xs font-bold text-zinc-400 hover:text-white transition duration-200">
+                            Créer un compte
+                        </button>
+                    </div>
+
+                    <!-- Authentification Google (Social OAuth) -->
+                    <button onclick="handleGoogleLogin()" class="w-full py-3 px-4 rounded-full bg-zinc-950 border border-zinc-800 hover:border-zinc-700 hover:bg-zinc-900/80 flex items-center justify-center gap-3 font-semibold text-xs transition duration-300">
+                        <svg class="w-4 h-4" viewBox="0 0 24 24" width="24" height="24" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+                            <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+                            <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z" fill="#FBBC05"/>
+                            <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+                        </svg>
+                        Continuer avec Google
+                    </button>
+
+                    <div class="flex items-center gap-3 my-2">
+                        <span class="h-px bg-zinc-800 flex-1"></span>
+                        <span class="text-[10px] text-zinc-500 uppercase tracking-wider font-semibold">ou par email</span>
+                        <span class="h-px bg-zinc-800 flex-1"></span>
+                    </div>
+
+                    <!-- Champs de formulaires -->
+                    <div class="space-y-4">
+                        <div>
+                            <input type="email" id="email" placeholder="Adresse Email" class="w-full px-5 py-3 rounded-full bg-zinc-950/80 border border-zinc-800 focus:border-zinc-500 focus:outline-none transition text-sm">
+                        </div>
+                        <div id="password-field">
+                            <input type="password" id="password" placeholder="Mot de passe" class="w-full px-5 py-3 rounded-full bg-zinc-950/80 border border-zinc-800 focus:border-zinc-500 focus:outline-none transition text-sm">
+                        </div>
+                        <div id="confirm-password-field" class="hidden">
+                            <input type="password" id="password-confirm" placeholder="Confirmer le mot de passe" class="w-full px-5 py-3 rounded-full bg-zinc-950/80 border border-zinc-800 focus:border-zinc-500 focus:outline-none transition text-sm">
+                        </div>
+
+                        <div class="flex justify-between items-center px-2">
+                            <!-- Option mot de passe oublié -->
+                            <button onclick="switchTab('reset')" id="link-forgot" class="text-xs text-zinc-400 hover:text-white transition duration-200">
+                                Mot de passe oublié ?
+                            </button>
+                        </div>
+
+                        <!-- Bouton principal d'action -->
+                        <button onclick="handlePrimaryAction()" id="btn-primary" class="w-full py-3.5 mt-2 rounded-full bg-white text-black font-black text-sm hover:bg-zinc-200 transition duration-300 shadow-lg shadow-white/5 flex items-center justify-center gap-2">
+                            <span id="btn-text">Se connecter et jumeler</span>
+                            <!-- Loading spinner -->
+                            <span id="btn-spinner" class="hidden w-4 h-4 border-2 border-zinc-800 border-t-transparent rounded-full animate-spin"></span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- B. Vue de Session Active (Jumelage Direct ou Déconnexion) -->
+                <div id="session-flow" class="hidden space-y-6">
+                    <div class="text-center space-y-2">
+                        <div class="w-12 h-12 rounded-full bg-green-950 border border-green-800 text-green-400 flex items-center justify-center mx-auto text-xl">✓</div>
+                        <h3 class="text-lg font-bold text-white">Connexion Cloud Active</h3>
+                        <p class="text-xs text-zinc-400">Connecté en tant que <span id="session-email" class="text-white font-semibold">...</span></p>
+                    </div>
+
+                    <div id="session-pairing-actions" class="hidden p-4 rounded-2xl bg-zinc-900 border border-zinc-800 space-y-4">
+                        <div class="text-center">
+                            <p class="text-xs text-zinc-400">Tu as initié un jumelage avec le code :</p>
+                            <h4 id="session-pair-code" class="text-2xl font-black tracking-widest text-white mt-1">-</h4>
+                        </div>
+                        <button onclick="confirmActivePairing()" id="btn-confirm-pair" class="w-full py-3 rounded-full bg-green-500 text-black font-black text-xs hover:bg-green-400 transition duration-300 flex items-center justify-center gap-2">
+                            <span>Jumeler cet appareil</span>
+                            <span id="pair-spinner" class="hidden w-4 h-4 border-2 border-zinc-800 border-t-transparent rounded-full animate-spin"></span>
+                        </button>
+                    </div>
+
+                    <div class="space-y-3">
+                        <button onclick="handleLogout()" class="w-full py-3 rounded-full bg-zinc-950 border border-zinc-800 hover:border-zinc-700 hover:bg-zinc-900/60 font-semibold text-xs text-red-400 hover:text-red-300 transition duration-300">
+                            Se déconnecter
+                        </button>
+                    </div>
+                </div>
+
+                <!-- C. Toast d'information & Status -->
+                <div id="status-message" class="hidden mt-4 text-xs font-semibold p-3.5 rounded-2xl border text-center transition duration-300"></div>
+
+            </div>
+        </div>
+    </main>
+
+    <!-- 4. BANDEAU DE DÉFILEMENT HORIZONTAL DES AVANTAGES (MARQUEE) -->
+    <footer class="w-full bg-zinc-900/40 border-t border-zinc-900 py-4 relative z-10 overflow-hidden">
+        <div class="marquee-inner flex items-center gap-12 text-xs font-semibold tracking-wide text-zinc-400">
+            <!-- Set 1 -->
+            <div class="flex items-center gap-3"><span>📺</span> <span>Synchronisation TV &amp; Mobile instantanée</span></div>
+            <div class="flex items-center gap-3"><span>👥</span> <span>Multi-profils indépendants avec codes PIN</span></div>
+            <div class="flex items-center gap-3"><span>🍿</span> <span>Reprise de lecture (Continue Watching) sur tous les écrans</span></div>
+            <div class="flex items-center gap-3"><span>⭐</span> <span>Favoris IPTV et chaînes préférées partagés</span></div>
+            <div class="flex items-center gap-3"><span>🛠️</span> <span>Sauvegarde automatique des addons et listes M3U</span></div>
+            <div class="flex items-center gap-3"><span>🔒</span> <span>Sécurité de vos préférences et accès cloud</span></div>
+            <!-- Set 2 (Duplicates for seamless loop) -->
+            <div class="flex items-center gap-3"><span>📺</span> <span>Synchronisation TV &amp; Mobile instantanée</span></div>
+            <div class="flex items-center gap-3"><span>👥</span> <span>Multi-profils indépendants avec codes PIN</span></div>
+            <div class="flex items-center gap-3"><span>🍿</span> <span>Reprise de lecture (Continue Watching) sur tous les écrans</span></div>
+            <div class="flex items-center gap-3"><span>⭐</span> <span>Favoris IPTV et chaînes préférées partagés</span></div>
+            <div class="flex items-center gap-3"><span>🛠️</span> <span>Sauvegarde automatique des addons et listes M3U</span></div>
+            <div class="flex items-center gap-3"><span>🔒</span> <span>Sécurité de vos préférences et accès cloud</span></div>
+        </div>
+    </footer>
+
+    <!-- 5. LOGIQUE CLIENT SUPABASE -->
     <script>
-        // Configuration de ton Supabase MegaTv avec tes vraies clés
         const SUPABASE_URL = "https://lciimaytmryruyooktkd.supabase.co";
         const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxjaWltYXl0bXJ5cnV5b29rdGtkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkzNTEwNDAsImV4cCI6MjA5NDkyNzA0MH0.xj8ITmbNeKLShcdKcqvpy--V8B7EcBHkWGkNaENjilI";
         const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-        // Récupération du code TV dans l'URL (?code=XYZ)
+        // Analyse de l'URL pour le code de jumelage TV
         const urlParams = new URLSearchParams(window.location.search);
-        const tvCode = urlParams.get('code');
+        const tvCode = (urlParams.get('code') || "").trim().toUpperCase();
 
-        async function handleLogin() {
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
-            const status = document.getElementById('status-message');
+        let currentFlow = "login"; // "login" | "register" | "reset"
 
-            if (!tvCode) {
-                showStatus("Erreur : Aucun code de jumelage trouvé dans l'URL.", "bg-red-950 text-red-400");
-                return;
+        // Initialisation de la page
+        document.addEventListener("DOMContentLoaded", () => {
+            initUi();
+            checkSession();
+        });
+
+        function initUi() {
+            if (tvCode) {
+                // Révèle l'en-tête de jumelage
+                document.getElementById('pairing-header').classList.remove('hidden');
+                document.getElementById('display-pair-code').innerText = tvCode;
+                document.getElementById('session-pair-code').innerText = tvCode;
             }
+            switchTab(currentFlow);
+        }
 
-            // 1. Connexion de l'utilisateur sur Supabase
-            const { data, error } = await supabase.auth.signInWithPassword({ email, password });
-
-            if (error) {
-                showStatus("Échec de l'authentification : " + error.message, "bg-red-950 text-red-400");
-                return;
-            }
-
-            // 2. Mise à jour de la table de jumelage pour la TV
-            const { error: pairError } = await supabase
-                .from('tv_pairings')
-                .update({ account_id: data.user.id, status: 'paired' })
-                .eq('code', tvCode);
-
-            if (pairError) {
-                showStatus("Erreur de jumelage : " + pairError.message, "bg-red-950 text-red-400");
+        // Vérification de la session active
+        async function checkSession() {
+            const { data: { session }, error } = await supabase.auth.getSession();
+            if (error || !session) {
+                document.getElementById('auth-flow').classList.remove('hidden');
+                document.getElementById('session-flow').classList.add('hidden');
             } else {
-                showStatus("✓ TV connectée avec succès ! Tu peux fermer cette page.", "bg-green-950 text-green-400");
-                document.getElementById('auth-form').classList.add('hidden');
+                document.getElementById('auth-flow').classList.add('hidden');
+                document.getElementById('session-flow').classList.remove('hidden');
+                document.getElementById('session-email').innerText = session.user.email;
+
+                if (tvCode) {
+                    document.getElementById('session-pairing-actions').classList.remove('hidden');
+                } else {
+                    document.getElementById('session-pairing-actions').classList.add('hidden');
+                }
             }
         }
 
+        // Basculement entre les formulaires
+        function switchTab(flow) {
+            currentFlow = flow;
+            hideStatus();
+
+            const tabLogin = document.getElementById('tab-login');
+            const tabRegister = document.getElementById('tab-register');
+            const confirmField = document.getElementById('confirm-password-field');
+            const passwordField = document.getElementById('password-field');
+            const forgotLink = document.getElementById('link-forgot');
+            const btnText = document.getElementById('btn-text');
+
+            // Reset tab styles
+            tabLogin.className = "flex-1 py-2 rounded-full text-xs font-bold transition duration-200 text-zinc-400 hover:text-white";
+            tabRegister.className = "flex-1 py-2 rounded-full text-xs font-bold transition duration-200 text-zinc-400 hover:text-white";
+
+            if (flow === 'login') {
+                tabLogin.className = "flex-1 py-2 rounded-full text-xs font-bold transition duration-200 bg-white text-black";
+                confirmField.classList.add('hidden');
+                passwordField.classList.remove('hidden');
+                forgotLink.classList.remove('hidden');
+                btnText.innerText = tvCode ? "Se connecter et jumeler" : "Se connecter";
+            } else if (flow === 'register') {
+                tabRegister.className = "flex-1 py-2 rounded-full text-xs font-bold transition duration-200 bg-white text-black";
+                confirmField.classList.remove('hidden');
+                passwordField.classList.remove('hidden');
+                forgotLink.classList.add('hidden');
+                btnText.innerText = tvCode ? "S'inscrire et jumeler" : "S'inscrire";
+            } else if (flow === 'reset') {
+                confirmField.classList.add('hidden');
+                passwordField.classList.add('hidden');
+                forgotLink.classList.add('hidden');
+                btnText.innerText = "Réinitialiser mon mot de passe";
+            }
+        }
+
+        // Chargement visuel du bouton
+        function setBusy(on) {
+            const btnSpinner = document.getElementById('btn-spinner');
+            const pairSpinner = document.getElementById('pair-spinner');
+            const primaryBtn = document.getElementById('btn-primary');
+            const confirmBtn = document.getElementById('btn-confirm-pair');
+
+            if (on) {
+                btnSpinner.classList.remove('hidden');
+                pairSpinner.classList.remove('hidden');
+                if (primaryBtn) primaryBtn.disabled = true;
+                if (confirmBtn) confirmBtn.disabled = true;
+            } else {
+                btnSpinner.classList.add('hidden');
+                pairSpinner.classList.add('hidden');
+                if (primaryBtn) primaryBtn.disabled = false;
+                if (confirmBtn) confirmBtn.disabled = false;
+            }
+        }
+
+        // Actions d'authentification principales
+        async function handlePrimaryAction() {
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value;
+            const passwordConfirm = document.getElementById('password-confirm').value;
+
+            if (!email) {
+                showStatus("Veuillez saisir votre adresse email.", "bg-red-950/70 text-red-400 border-red-900/50");
+                return;
+            }
+
+            setBusy(true);
+            hideStatus();
+
+            try {
+                if (currentFlow === 'login') {
+                    // Connexion par mot de passe
+                    const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+                    if (error) throw error;
+                    
+                    if (tvCode) {
+                        showStatus("Connexion réussie, jumelage en cours...", "bg-zinc-900/60 text-zinc-300 border-zinc-800");
+                        await pairDevice(data.session, data.user.id, data.user.email);
+                        showStatus("✓ TV connectée avec succès ! Redirection...", "bg-green-950/80 text-green-400 border-green-900/50");
+                    } else {
+                        showStatus("✓ Connecté avec succès !", "bg-green-950/80 text-green-400 border-green-900/50");
+                    }
+                    setTimeout(() => { checkSession(); }, 1200);
+
+                } else if (currentFlow === 'register') {
+                    // Inscription
+                    if (password !== passwordConfirm) {
+                        throw new Error("Les mots de passe ne correspondent pas.");
+                    }
+                    if (password.length < 6) {
+                        throw new Error("Le mot de passe doit contenir au moins 6 caractères.");
+                    }
+
+                    const { data, error } = await supabase.auth.signUp({ 
+                        email, 
+                        password,
+                        options: {
+                            emailRedirectTo: window.location.origin
+                        }
+                    });
+                    if (error) throw error;
+
+                    if (data.session) {
+                        if (tvCode) {
+                            showStatus("Compte créé, jumelage en cours...", "bg-zinc-900/60 text-zinc-300 border-zinc-800");
+                            await pairDevice(data.session, data.user.id, data.user.email);
+                            showStatus("✓ TV connectée avec succès ! Redirection...", "bg-green-950/80 text-green-400 border-green-900/50");
+                        } else {
+                            showStatus("✓ Compte créé avec succès !", "bg-green-950/80 text-green-400 border-green-900/50");
+                        }
+                        setTimeout(() => { checkSession(); }, 1200);
+                    } else {
+                        showStatus("✓ Inscription réussie ! Veuillez vérifier vos e-mails pour confirmer votre compte.", "bg-green-950/80 text-green-400 border-green-900/50");
+                    }
+
+                } else if (currentFlow === 'reset') {
+                    // Envoi de l'email de réinitialisation
+                    const { error } = await supabase.auth.resetPasswordForEmail(email, {
+                        redirectTo: `${window.location.origin}/#type=recovery`
+                    });
+                    if (error) throw error;
+                    showStatus("✓ E-mail de réinitialisation envoyé ! Vérifiez votre boîte de réception.", "bg-green-950/80 text-green-400 border-green-900/50");
+                }
+            } catch (err) {
+                showStatus(err.message || "Une erreur est survenue.", "bg-red-950/70 text-red-400 border-red-900/50");
+            } finally {
+                setBusy(false);
+            }
+        }
+
+        // Authentification Google
+        async function handleGoogleLogin() {
+            setBusy(true);
+            hideStatus();
+            try {
+                // Construit l'URL de redirection incluant le code TV si présent
+                const redirectToUrl = tvCode 
+                    ? `${window.location.origin}?code=${tvCode}`
+                    : window.location.origin;
+
+                const { error } = await supabase.auth.signInWithOAuth({
+                    provider: 'google',
+                    options: {
+                        redirectTo: redirectToUrl
+                    }
+                });
+                if (error) throw error;
+            } catch (err) {
+                showStatus(err.message || "Échec de connexion Google.", "bg-red-950/70 text-red-400 border-red-900/50");
+                setBusy(false);
+            }
+        }
+
+        // Jumelage de l'appareil (TV)
+        async function pairDevice(session, userId, email) {
+            // Option 1 : Tente d'appeler l'Edge Function d'approbation (tv-auth-approve)
+            try {
+                const resp = await fetch(`${SUPABASE_URL}/functions/v1/tv-auth-approve`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        apikey: SUPABASE_ANON_KEY,
+                        Authorization: `Bearer ${session.access_token}`,
+                    },
+                    body: JSON.stringify({ code: tvCode, refresh_token: session.refresh_token }),
+                });
+                if (resp.ok) return true;
+            } catch (e) {
+                console.warn("Échec d'appairage via l'Edge Function, essai de mise à jour directe...", e);
+            }
+
+            // Option 2 : Écriture directe dans la table tv_pairings
+            try {
+                const { error: pError } = await supabase
+                    .from('tv_pairings')
+                    .update({ 
+                        user_id: userId, 
+                        status: 'approved',
+                        approved_at: new Date().toISOString(),
+                        user_email: email,
+                        access_token: session.access_token,
+                        refresh_token: session.refresh_token
+                    })
+                    .eq('user_code', tvCode);
+                if (!pError) return true;
+            } catch (e) {
+                console.warn("Échec de mise à jour de tv_pairings", e);
+            }
+
+            // Option 3 : Écriture directe dans la table tv_device_auth_sessions
+            try {
+                const { error: sError } = await supabase
+                    .from('tv_device_auth_sessions')
+                    .update({ 
+                        user_id: userId, 
+                        status: 'approved',
+                        approved_at: new Date().toISOString(),
+                        user_email: email,
+                        access_token: session.access_token,
+                        refresh_token: session.refresh_token
+                    })
+                    .eq('user_code', tvCode);
+                if (!sError) return true;
+                throw sError;
+            } catch (e) {
+                console.error("Tous les canaux de jumelage ont échoué", e);
+            }
+
+            throw new Error("Le code de jumelage TV est invalide ou expiré.");
+        }
+
+        // Confirmer le jumelage si déjà connecté
+        async function confirmActivePairing() {
+            setBusy(true);
+            hideStatus();
+            try {
+                const { data: { session }, error: sError } = await supabase.auth.getSession();
+                if (sError || !session) throw new Error("Session expirée. Veuillez vous reconnecter.");
+
+                await pairDevice(session, session.user.id, session.user.email);
+                showStatus("✓ TV connectée avec succès ! Tu peux fermer cette page.", "bg-green-950/80 text-green-400 border-green-900/50");
+                setTimeout(() => {
+                    // Supprime le code TV de l'URL pour rafraîchir l'affichage
+                    window.history.replaceState({}, document.title, window.location.pathname);
+                    tvCode = "";
+                    initUi();
+                    checkSession();
+                }, 2000);
+            } catch (err) {
+                showStatus(err.message || "Le jumelage a échoué.", "bg-red-950/70 text-red-400 border-red-900/50");
+            } finally {
+                setBusy(false);
+            }
+        }
+
+        // Déconnexion
+        async function handleLogout() {
+            hideStatus();
+            await supabase.auth.signOut();
+            checkSession();
+        }
+
+        // Afficher les statuts informatifs
         function showStatus(text, classes) {
             const status = document.getElementById('status-message');
-            status.className = `mt-4 text-sm font-semibold p-3 rounded-full ${classes}`;
+            status.className = `mt-4 text-xs font-semibold p-3.5 rounded-2xl border text-center transition duration-300 ${classes}`;
             status.innerText = text;
             status.classList.remove('hidden');
+        }
+
+        function hideStatus() {
+            document.getElementById('status-message').classList.add('hidden');
         }
     </script>
 </body>
