@@ -1,625 +1,382 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="fr" data-theme="dark" data-lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MegaTv - Cloud & Jumelage</title>
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <style>
-        @keyframes scrollUp {
-            0% { transform: translateY(0); }
-            100% { transform: translateY(-50%); }
-        }
-        @keyframes scrollDown {
-            0% { transform: translateY(-50%); }
-            100% { transform: translateY(0); }
-        }
-        @keyframes marquee {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(-50%); }
-        }
-        .scroll-col-up {
-            display: flex;
-            flex-direction: column;
-            animation: scrollUp 55s linear infinite;
-            will-change: transform;
-        }
-        .scroll-col-down {
-            display: flex;
-            flex-direction: column;
-            animation: scrollDown 60s linear infinite;
-            will-change: transform;
-        }
-        .marquee-inner {
-            display: flex;
-            width: max-content;
-            animation: marquee 35s linear infinite;
-        }
-        .marquee-inner:hover {
-            animation-play-state: paused;
-        }
-        /* Custom scrollbars */
-        ::-webkit-scrollbar {
-            width: 6px;
-        }
-        ::-webkit-scrollbar-track {
-            background: rgba(9, 9, 11, 0.5);
-        }
-        ::-webkit-scrollbar-thumb {
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 999px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: rgba(255, 255, 255, 0.2);
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MegaTv — Films, Séries & Live TV</title>
+<link rel="icon" type="image/png" href="assets/mark.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300;12..96,400;12..96,500;12..96,600;12..96,700;12..96,800&family=Instrument+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Space+Grotesk:wght@400;500;600;700&family=Outfit:wght@300;400;500;600;700;800&family=DM+Sans:opsz,wght@9..40,400;9..40,500&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<link rel="stylesheet" href="styles.css?v=2026h">
 </head>
-<body class="bg-zinc-950 text-white min-h-screen flex flex-col justify-between relative overflow-x-hidden overflow-y-auto font-sans">
+<body data-theme="dark">
 
-    <!-- 1. FOND CINÉMATIQUE (GRILLES DE DEFILLEMENT DE VISUELS) -->
-    <div class="fixed inset-0 z-0 flex justify-center gap-6 px-6 overflow-hidden pointer-events-none opacity-30 filter blur-[2px]">
-        <!-- Col 1: Up -->
-        <div class="w-32 sm:w-40 md:w-48 flex-shrink-0">
-            <div class="scroll-col-up">
-                <!-- Set 1 -->
-                <img src="https://image.tmdb.org/t/p/w300/f77yGBGOjainowvlGHU70CCQrjV.jpg" class="mb-6 rounded-xl shadow-md object-cover aspect-[2/3]" alt="Poster">
-                <img src="https://image.tmdb.org/t/p/w300/zR4RAnv4s6zpXhiqepdonAw4oF3.jpg" class="mb-6 rounded-xl shadow-md object-cover aspect-[2/3]" alt="Poster">
-                <img src="https://image.tmdb.org/t/p/w300/74VbBYHmpjgeES1zkRo1DwHkWnE.jpg" class="mb-6 rounded-xl shadow-md object-cover aspect-[2/3]" alt="Poster">
-                <img src="https://image.tmdb.org/t/p/w300/aSQktALDmbunDbwkuZbZFMEWVFr.jpg" class="mb-6 rounded-xl shadow-md object-cover aspect-[2/3]" alt="Poster">
-                <img src="https://image.tmdb.org/t/p/w300/wzyy8ZrsuHfAt4iz4iH3rT0tdoT.jpg" class="mb-6 rounded-xl shadow-md object-cover aspect-[2/3]" alt="Poster">
-                <img src="https://image.tmdb.org/t/p/w300/s8F6DCIX9gOMM6rv6WCGyGp6oSB.jpg" class="mb-6 rounded-xl shadow-md object-cover aspect-[2/3]" alt="Poster">
-                <!-- Set 2 (Duplicates) -->
-                <img src="https://image.tmdb.org/t/p/w300/f77yGBGOjainowvlGHU70CCQrjV.jpg" class="mb-6 rounded-xl shadow-md object-cover aspect-[2/3]" alt="Poster">
-                <img src="https://image.tmdb.org/t/p/w300/zR4RAnv4s6zpXhiqepdonAw4oF3.jpg" class="mb-6 rounded-xl shadow-md object-cover aspect-[2/3]" alt="Poster">
-                <img src="https://image.tmdb.org/t/p/w300/74VbBYHmpjgeES1zkRo1DwHkWnE.jpg" class="mb-6 rounded-xl shadow-md object-cover aspect-[2/3]" alt="Poster">
-                <img src="https://image.tmdb.org/t/p/w300/aSQktALDmbunDbwkuZbZFMEWVFr.jpg" class="mb-6 rounded-xl shadow-md object-cover aspect-[2/3]" alt="Poster">
-                <img src="https://image.tmdb.org/t/p/w300/wzyy8ZrsuHfAt4iz4iH3rT0tdoT.jpg" class="mb-6 rounded-xl shadow-md object-cover aspect-[2/3]" alt="Poster">
-                <img src="https://image.tmdb.org/t/p/w300/s8F6DCIX9gOMM6rv6WCGyGp6oSB.jpg" class="mb-6 rounded-xl shadow-md object-cover aspect-[2/3]" alt="Poster">
-            </div>
-        </div>
-        <!-- Col 2: Down -->
-        <div class="w-32 sm:w-40 md:w-48 flex-shrink-0">
-            <div class="scroll-col-down">
-                <!-- Set 1 -->
-                <img src="https://image.tmdb.org/t/p/w300/gz64ZUKg4C4g1yfGD0o5opcBOKy.jpg" class="mb-6 rounded-xl shadow-md object-cover aspect-[2/3]" alt="Poster">
-                <img src="https://image.tmdb.org/t/p/w300/w5oW8zE7dudapyNwF8FQoQfU2Bz.jpg" class="mb-6 rounded-xl shadow-md object-cover aspect-[2/3]" alt="Poster">
-                <img src="https://image.tmdb.org/t/p/w300/iGpMm603GUKH2SiXB2S5m4sZ17t.jpg" class="mb-6 rounded-xl shadow-md object-cover aspect-[2/3]" alt="Poster">
-                <img src="https://image.tmdb.org/t/p/w300/vTIBjWMWx1p5Wv2J3IRhEW13lrj.jpg" class="mb-6 rounded-xl shadow-md object-cover aspect-[2/3]" alt="Poster">
-                <img src="https://image.tmdb.org/t/p/w300/yPkeeBEJdQO85AGCwi2XEIfMOxa.jpg" class="mb-6 rounded-xl shadow-md object-cover aspect-[2/3]" alt="Poster">
-                <img src="https://image.tmdb.org/t/p/w300/rxw7an9VWIlaEzTB4ETadMWSdym.jpg" class="mb-6 rounded-xl shadow-md object-cover aspect-[2/3]" alt="Poster">
-                <!-- Set 2 (Duplicates) -->
-                <img src="https://image.tmdb.org/t/p/w300/gz64ZUKg4C4g1yfGD0o5opcBOKy.jpg" class="mb-6 rounded-xl shadow-md object-cover aspect-[2/3]" alt="Poster">
-                <img src="https://image.tmdb.org/t/p/w300/w5oW8zE7dudapyNwF8FQoQfU2Bz.jpg" class="mb-6 rounded-xl shadow-md object-cover aspect-[2/3]" alt="Poster">
-                <img src="https://image.tmdb.org/t/p/w300/iGpMm603GUKH2SiXB2S5m4sZ17t.jpg" class="mb-6 rounded-xl shadow-md object-cover aspect-[2/3]" alt="Poster">
-                <img src="https://image.tmdb.org/t/p/w300/vTIBjWMWx1p5Wv2J3IRhEW13lrj.jpg" class="mb-6 rounded-xl shadow-md object-cover aspect-[2/3]" alt="Poster">
-                <img src="https://image.tmdb.org/t/p/w300/yPkeeBEJdQO85AGCwi2XEIfMOxa.jpg" class="mb-6 rounded-xl shadow-md object-cover aspect-[2/3]" alt="Poster">
-                <img src="https://image.tmdb.org/t/p/w300/rxw7an9VWIlaEzTB4ETadMWSdym.jpg" class="mb-6 rounded-xl shadow-md object-cover aspect-[2/3]" alt="Poster">
-            </div>
-        </div>
-        <!-- Col 3: Up (Hidden on mobile) -->
-        <div class="hidden md:block w-32 sm:w-40 md:w-48 flex-shrink-0">
-            <div class="scroll-col-up">
-                <!-- Set 1 -->
-                <img src="https://image.tmdb.org/t/p/w300/iQoIGnmrt8rzDDRC6el8HLvHvKf.jpg" class="mb-6 rounded-xl shadow-md object-cover aspect-[2/3]" alt="Poster">
-                <img src="https://image.tmdb.org/t/p/w300/55lEECwWtRWltEa6u3TbiljaoOd.jpg" class="mb-6 rounded-xl shadow-md object-cover aspect-[2/3]" alt="Poster">
-                <img src="https://image.tmdb.org/t/p/w300/iCvucorbs3hFqWshDbLe0fHzB71.jpg" class="mb-6 rounded-xl shadow-md object-cover aspect-[2/3]" alt="Poster">
-                <img src="https://image.tmdb.org/t/p/w300/kG3N8oQ10qiw2MsnSHFGJpQNyEy.jpg" class="mb-6 rounded-xl shadow-md object-cover aspect-[2/3]" alt="Poster">
-                <img src="https://image.tmdb.org/t/p/w300/t1PFVsGYdUHtPv0Xowoc9b4PAap.jpg" class="mb-6 rounded-xl shadow-md object-cover aspect-[2/3]" alt="Poster">
-                <img src="https://image.tmdb.org/t/p/w300/7NrvUI3vnW8H3rD7ExKcTL7KRcQ.jpg" class="mb-6 rounded-xl shadow-md object-cover aspect-[2/3]" alt="Poster">
-                <!-- Set 2 (Duplicates) -->
-                <img src="https://image.tmdb.org/t/p/w300/iQoIGnmrt8rzDDRC6el8HLvHvKf.jpg" class="mb-6 rounded-xl shadow-md object-cover aspect-[2/3]" alt="Poster">
-                <img src="https://image.tmdb.org/t/p/w300/55lEECwWtRWltEa6u3TbiljaoOd.jpg" class="mb-6 rounded-xl shadow-md object-cover aspect-[2/3]" alt="Poster">
-                <img src="https://image.tmdb.org/t/p/w300/iCvucorbs3hFqWshDbLe0fHzB71.jpg" class="mb-6 rounded-xl shadow-md object-cover aspect-[2/3]" alt="Poster">
-                <img src="https://image.tmdb.org/t/p/w300/kG3N8oQ10qiw2MsnSHFGJpQNyEy.jpg" class="mb-6 rounded-xl shadow-md object-cover aspect-[2/3]" alt="Poster">
-                <img src="https://image.tmdb.org/t/p/w300/t1PFVsGYdUHtPv0Xowoc9b4PAap.jpg" class="mb-6 rounded-xl shadow-md object-cover aspect-[2/3]" alt="Poster">
-                <img src="https://image.tmdb.org/t/p/w300/7NrvUI3vnW8H3rD7ExKcTL7KRcQ.jpg" class="mb-6 rounded-xl shadow-md object-cover aspect-[2/3]" alt="Poster">
-            </div>
-        </div>
-        <!-- Col 4: Down (Hidden on desktop/tablet) -->
-        <div class="hidden lg:block w-32 sm:w-40 md:w-48 flex-shrink-0">
-            <div class="scroll-col-down">
-                <!-- Set 1 -->
-                <img src="https://image.tmdb.org/t/p/w300/f77yGBGOjainowvlGHU70CCQrjV.jpg" class="mb-6 rounded-xl shadow-md object-cover aspect-[2/3]" alt="Poster">
-                <img src="https://image.tmdb.org/t/p/w300/iQoIGnmrt8rzDDRC6el8HLvHvKf.jpg" class="mb-6 rounded-xl shadow-md object-cover aspect-[2/3]" alt="Poster">
-                <img src="https://image.tmdb.org/t/p/w300/gz64ZUKg4C4g1yfGD0o5opcBOKy.jpg" class="mb-6 rounded-xl shadow-md object-cover aspect-[2/3]" alt="Poster">
-                <img src="https://image.tmdb.org/t/p/w300/zR4RAnv4s6zpXhiqepdonAw4oF3.jpg" class="mb-6 rounded-xl shadow-md object-cover aspect-[2/3]" alt="Poster">
-                <img src="https://image.tmdb.org/t/p/w300/yPkeeBEJdQO85AGCwi2XEIfMOxa.jpg" class="mb-6 rounded-xl shadow-md object-cover aspect-[2/3]" alt="Poster">
-                <img src="https://image.tmdb.org/t/p/w300/wzyy8ZrsuHfAt4iz4iH3rT0tdoT.jpg" class="mb-6 rounded-xl shadow-md object-cover aspect-[2/3]" alt="Poster">
-                <!-- Set 2 (Duplicates) -->
-                <img src="https://image.tmdb.org/t/p/w300/f77yGBGOjainowvlGHU70CCQrjV.jpg" class="mb-6 rounded-xl shadow-md object-cover aspect-[2/3]" alt="Poster">
-                <img src="https://image.tmdb.org/t/p/w300/iQoIGnmrt8rzDDRC6el8HLvHvKf.jpg" class="mb-6 rounded-xl shadow-md object-cover aspect-[2/3]" alt="Poster">
-                <img src="https://image.tmdb.org/t/p/w300/gz64ZUKg4C4g1yfGD0o5opcBOKy.jpg" class="mb-6 rounded-xl shadow-md object-cover aspect-[2/3]" alt="Poster">
-                <img src="https://image.tmdb.org/t/p/w300/zR4RAnv4s6zpXhiqepdonAw4oF3.jpg" class="mb-6 rounded-xl shadow-md object-cover aspect-[2/3]" alt="Poster">
-                <img src="https://image.tmdb.org/t/p/w300/yPkeeBEJdQO85AGCwi2XEIfMOxa.jpg" class="mb-6 rounded-xl shadow-md object-cover aspect-[2/3]" alt="Poster">
-                <img src="https://image.tmdb.org/t/p/w300/wzyy8ZrsuHfAt4iz4iH3rT0tdoT.jpg" class="mb-6 rounded-xl shadow-md object-cover aspect-[2/3]" alt="Poster">
-            </div>
-        </div>
+<!-- ambient backdrop -->
+<div class="backdrop" aria-hidden="true">
+  <div class="aurora a1" data-par="0.06"></div>
+  <div class="aurora a2" data-par="-0.05"></div>
+  <div class="aurora a3" data-par="0.04"></div>
+  <div class="aurora a4" data-par="-0.04"></div>
+</div>
+<div class="grid-veil" aria-hidden="true"></div>
+
+<!-- ===== NAV ===== -->
+<nav class="nav">
+  <a href="#hero" class="nav-logo"><img class="logo-dark" src="assets/logo.png" alt="MegaTv"><img class="logo-light" src="assets/logo-light.png" alt="MegaTv"></a>
+  <div class="nav-right">
+    <div class="nav-links">
+      <a href="#features" class="nav-link" data-i18n="nav.features">Fonctionnalités</a>
+      <a href="#pricing" class="nav-link" data-i18n="nav.pricing">Tarifs</a>
+      <a href="#account" class="nav-link" data-i18n="nav.account">Mon Compte</a>
     </div>
+    <span class="lang-badge" onclick="toggleLang()" id="lang-toggle">EN</span>
+    <button class="icon-btn" onclick="toggleTheme()" title="Theme">
+      <svg id="theme-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+      </svg>
+    </button>
+    <a href="#pricing" class="btn-spectrum" data-i18n="nav.pro">Passer Pro</a>
+  </div>
+</nav>
 
-    <!-- Filtre radial sombre + Blur de fondu -->
-    <div class="fixed inset-0 z-1 backdrop-blur-[6px] pointer-events-none" style="background: radial-gradient(circle, rgba(9, 9, 11, 0.45) 0%, rgba(9, 9, 11, 0.95) 90%);"></div>
+<!-- ===== HERO ===== -->
+<section class="hero" id="hero" data-screen-label="Hero">
+  <div class="hero-badge">
+    <span class="dot"></span>
+    <span data-i18n="hero.badge">Disponible sur Android TV · Mobile · Fire TV</span>
+  </div>
+  <h1 class="hero-title">
+    <span>Films, Séries</span>
+    <span class="spectrum-text">&amp; Live TV</span>
+  </h1>
+  <p class="hero-sub" data-i18n="hero.sub">Une application, toutes vos sources. Regardez ce que vous voulez, où que vous soyez, sur tous vos écrans.</p>
+  <div class="hero-ctas">
+    <a href="#pricing" class="btn-spectrum lg">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M5 3.5v17a1 1 0 0 0 1.5.87l14-8.5a1 1 0 0 0 0-1.74l-14-8.5A1 1 0 0 0 5 3.5z"/></svg>
+      <span data-i18n="hero.cta1">Télécharger gratuitement</span>
+    </a>
+    <a href="#features" class="btn-ghost lg"><span data-i18n="hero.cta2">Découvrir</span></a>
+  </div>
 
-    <!-- 2. HEADER BRAND -->
-    <header class="w-full max-w-7xl mx-auto px-6 py-6 flex items-center justify-between relative z-10">
-        <div class="flex items-center gap-3">
-            <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-white to-zinc-500 flex items-center justify-center font-black text-black shadow-lg shadow-white/10 text-lg">M</div>
-            <span class="text-xl font-black tracking-tight text-white">MegaTv <span class="text-zinc-500 font-medium text-xs border border-zinc-800 px-2 py-0.5 rounded-full ml-1 bg-zinc-900/60">Cloud</span></span>
+  <!-- device cluster (screenshots already include the device bezel) -->
+  <div class="hero-stage">
+    <div class="hero-3d">
+      <div class="device left"><img src="assets/phone-search.png" alt="MegaTv — Recherche"></div>
+      <div class="device right"><img src="assets/phone-detail.png" alt="MegaTv — Fiche détail"></div>
+      <div class="device center"><img src="assets/phone-home.png" alt="MegaTv — Accueil"></div>
+    </div>
+  </div>
+
+  <div class="scroll-cue"><span class="mouse"></span></div>
+</section>
+
+<!-- ===== MARQUEE ===== -->
+<div class="marquee">
+  <div class="marquee-track" id="marquee"></div>
+</div>
+
+<!-- ===== PLATFORMS ===== -->
+<div class="platforms reveal">
+  <span class="label" data-i18n="platforms.label">Disponible sur</span>
+  <div class="pf-pill"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/><circle cx="9" cy="11" r="1.4"/><circle cx="15" cy="11" r="1.4"/></svg>Android TV</div>
+  <div class="pf-pill"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.7 9.05 7.4c1.46.07 2.46.83 3.32.9 1.27-.24 2.48-1.02 3.84-.91 1.63.13 2.87.8 3.67 2.04-3.35 2.01-2.8 6.42.77 7.66-.52 1.35-1.15 2.69-2.6 3.19zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z"/></svg>iOS</div>
+  <div class="pf-pill"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M6.18 15.64a2.18 2.18 0 0 1 2.18 2.18C8.36 19.01 7.38 20 6.18 20C4.98 20 4 19.01 4 17.82a2.18 2.18 0 0 1 2.18-2.18M4 4.44A15.56 15.56 0 0 1 19.56 20h-2.83A12.73 12.73 0 0 0 4 7.27V4.44m0 5.66a9.9 9.9 0 0 1 9.9 9.9h-2.83A7.07 7.07 0 0 0 4 12.93V10.1z"/></svg>Mobile</div>
+  <div class="pf-pill"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.9 2.318A5.006 5.006 0 0 0 12.9 0H5a5 5 0 0 0-5 5v14a5 5 0 0 0 5 5h7.9a5.006 5.006 0 0 0 5-4.318L19.2 12l-1.3-9.682zM17 12l-7 4V8l7 4z"/></svg>Fire TV Stick</div>
+</div>
+
+<!-- ===== FEATURES ===== -->
+<section id="features" data-screen-label="Features">
+  <div class="reveal center" style="margin-bottom:56px;">
+    <div class="eyebrow"><span data-i18n="feat.eyebrow">Tout ce qu'il vous faut</span></div>
+    <h2 class="section-title" data-i18n="feat.title">Une app. Un univers complet.</h2>
+    <p class="section-sub" data-i18n="feat.sub">Du contenu à la demande jusqu'aux chaînes live, tout est centralisé dans une interface premium.</p>
+  </div>
+
+  <div class="features-grid reveal" data-stagger>
+    <div class="feat-card large">
+      <div class="feat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><rect x="2.5" y="4" width="19" height="16" rx="3"/><path d="M10 9.5v5l4-2.5z" fill="currentColor"/><path d="M2.5 9h19"/></svg></div>
+      <div class="feat-title" data-i18n="f1.title">Lecteur Vidéo Premium</div>
+      <div class="feat-desc" data-i18n="f1.desc">ExoPlayer / Media3 haute performance. Sélecteur de sources intelligent, lecture automatique, framerate matching, pistes audio multiples et sous-titres IA en temps réel.</div>
+      <div class="feat-tags"><span class="feat-tag">4K</span><span class="feat-tag">HDR</span><span class="feat-tag">Dolby Vision</span><span class="feat-tag">1080p</span><span class="feat-tag">Sous-titres IA</span><span class="feat-tag">Auto-play</span></div>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V20h14V9.5"/><path d="M9.5 20v-6h5v6"/></svg></div>
+      <div class="feat-title" data-i18n="f2.title">Accueil Personnalisé</div>
+      <div class="feat-desc" data-i18n="f2.desc">Hero avec bande-annonce, Top 10 du jour, rails thématiques par genre, service, décennie. Reprise là où vous vous êtes arrêté.</div>
+      <div class="feat-tags"><span class="feat-tag">Top 10</span><span class="feat-tag">Trakt</span><span class="feat-tag">TMDB</span></div>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="8" width="18" height="12" rx="2.5"/><path d="m8 8 4-4 4 4"/><circle cx="12" cy="14" r="2.3"/></svg></div>
+      <div class="feat-title" data-i18n="f3.title">TV en Direct IPTV</div>
+      <div class="feat-desc" data-i18n="f3.desc">Playlists M3U et Xtream, guide des programmes (EPG), favoris, dizaines de milliers de chaînes, logos optimisés, VOD IPTV.</div>
+      <div class="feat-tags"><span class="feat-tag">M3U</span><span class="feat-tag">Xtream</span><span class="feat-tag">EPG</span><span class="feat-tag">Favoris</span></div>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="6" rx="2"/><rect x="3" y="14" width="18" height="6" rx="2"/><path d="M7 7h.01M7 17h.01"/></svg></div>
+      <div class="feat-title" data-i18n="f4.title">Vos Bibliothèques</div>
+      <div class="feat-desc" data-i18n="f4.desc">Connectez Plex, Jellyfin et Emby. Addons Stremio, catalogues Trakt &amp; MDBList, URLs personnalisées.</div>
+      <div class="feat-tags"><span class="feat-tag">Plex</span><span class="feat-tag">Jellyfin</span><span class="feat-tag">Emby</span><span class="feat-tag">Stremio</span></div>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6.5 19a4.5 4.5 0 0 1-.5-8.97 6 6 0 0 1 11.64-1.2A4 4 0 0 1 18 19z"/><path d="M12 12v5m0-5-2 2m2-2 2 2"/></svg></div>
+      <div class="feat-title" data-i18n="f5.title">Sync Cloud Temps Réel</div>
+      <div class="feat-desc" data-i18n="f5.desc">MegaTv Cloud synchronise vos profils, réglages, progressions et watchlists entre tous vos appareils.</div>
+      <div class="feat-tags"><span class="feat-tag">Multi-appareils</span><span class="feat-tag">Lecture à distance</span></div>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h12a1 1 0 0 1 1 1v17l-7-4-7 4V4a1 1 0 0 1 1-1z"/></svg></div>
+      <div class="feat-title" data-i18n="f6.title">Watchlist Avancée</div>
+      <div class="feat-desc" data-i18n="f6.desc">Ma liste avec filtres poussés : vu/non vu, genre, année, note. Anti-spoilers avec flou. Sync Trakt.</div>
+      <div class="feat-tags"><span class="feat-tag">Filtres</span><span class="feat-tag">Anti-spoilers</span><span class="feat-tag">Trakt</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SCREENSHOTS ===== -->
+<section class="screens" data-screen-label="Screenshots">
+  <div class="reveal center">
+    <div class="eyebrow"><span data-i18n="sc.eyebrow">Interface Premium</span></div>
+    <h2 class="section-title" data-i18n="sc.title">Conçu pour chaque écran</h2>
+  </div>
+  <div class="screens-track-wrap">
+    <div class="screens-track" id="screensTrack">
+      <div class="shot"><img src="assets/phone-home.png" alt="Accueil"></div>
+      <div class="shot"><img src="assets/phone-search.png" alt="Recherche"></div>
+      <div class="shot"><img src="assets/phone-detail.png" alt="Fiche détail"></div>
+      <div class="shot"><img src="assets/phone-home.png" alt="Accueil"></div>
+      <div class="shot"><img src="assets/phone-search.png" alt="Recherche"></div>
+      <div class="shot"><img src="assets/phone-detail.png" alt="Fiche détail"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== TV SHOWCASE ===== -->
+<section data-screen-label="TV Showcase">
+  <div class="reveal center" style="margin-bottom:8px;">
+    <div class="eyebrow"><span data-i18n="tv.eyebrow">Optimisé pour Android TV</span></div>
+    <h2 class="section-title" data-i18n="tv.title">Grand écran, grande expérience.</h2>
+    <p class="section-sub" data-i18n="tv.sub">Interface navigable à la télécommande, Hero immersif, guide des programmes en temps réel.</p>
+  </div>
+  <div class="tv-wrap reveal">
+    <div class="tv-monitor">
+      <div class="tv-glow"></div>
+      <div class="tv-screen"><img id="tv-main-img" src="assets/tv-home.png" alt="MegaTv sur Android TV"></div>
+    </div>
+    <div class="tv-stand"></div>
+    <div class="tv-foot"></div>
+    <div class="tv-thumbs">
+      <div class="tv-thumb active" onclick="switchTV(this,0)"><img src="assets/tv-home.png" alt=""><span data-i18n="sc.home">Accueil</span></div>
+      <div class="tv-thumb" onclick="switchTV(this,1)"><img src="assets/tv-live.png" alt=""><span data-i18n="sc.live">TV en Direct</span></div>
+      <div class="tv-thumb" onclick="switchTV(this,2)"><img src="assets/tv-detail.png" alt=""><span data-i18n="sc.detail">Fiche Détail</span></div>
+      <div class="tv-thumb" onclick="switchTV(this,3)"><img src="assets/tv-person.png" alt=""><span data-i18n="tv.episodes">Acteurs</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== PROFILES ===== -->
+<section id="profiles" data-screen-label="Profiles">
+  <div class="split">
+    <div class="reveal">
+      <div class="eyebrow"><span data-i18n="prof.eyebrow">Pour toute la famille</span></div>
+      <h2 class="section-title" data-i18n="prof.title">Un profil pour chacun.</h2>
+      <p class="section-sub" data-i18n="prof.sub">Profils multiples avec avatar, couleur personnalisée et PIN. Profil enfants avec filtre contenu mature.</p>
+      <ul class="feature-list">
+        <li><span class="chk"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span data-i18n="prof.f1">Jusqu'à 5 profils par compte</span></li>
+        <li><span class="chk"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span data-i18n="prof.f2">PIN de protection + filtre contenu adulte</span></li>
+        <li><span class="chk"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span data-i18n="prof.f3">Avatar personnalisé synchronisé dans le cloud</span></li>
+        <li><span class="chk"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span data-i18n="prof.f4">Historique et watchlist isolés par profil</span></li>
+      </ul>
+    </div>
+    <div class="profiles-visual reveal">
+      <img class="pv-mark" src="assets/mark.png" alt="" aria-hidden="true">
+      <h3>MegaTv</h3>
+      <p class="who" data-i18n="prof.who">Qui regarde ?</p>
+      <div class="profiles-row">
+        <div class="profile-item"><div class="profile-avatar color" style="background:linear-gradient(150deg,#5b63d6,#3f9ae6);">P</div><span class="profile-name">Papa</span></div>
+        <div class="profile-item"><div class="profile-avatar color" style="background:linear-gradient(150deg,#1fa8a0,#5fbf5a);">M</div><span class="profile-name">Maman</span></div>
+        <div class="profile-item"><div class="profile-avatar color" style="background:linear-gradient(150deg,#f2b43c,#f4904a);">K</div><span class="profile-name">Kids</span></div>
+        <div class="profile-item"><div class="profile-avatar color" style="background:linear-gradient(150deg,#ee6a54,#d8497f);">C</div><span class="profile-name">Clémence</span></div>
+        <div class="profile-item"><div class="profile-avatar add">+</div><span class="profile-name" data-i18n="prof.add">Ajouter</span></div>
+      </div>
+      <button class="profile-manage" data-i18n="prof.manage">Gérer les profils</button>
+    </div>
+  </div>
+</section>
+
+<!-- ===== PRICING ===== -->
+<section id="pricing" data-screen-label="Pricing">
+  <div class="reveal center">
+    <div class="eyebrow"><span data-i18n="price.eyebrow">Simple &amp; Transparent</span></div>
+    <h2 class="section-title" data-i18n="price.title">Choisissez votre formule</h2>
+    <p class="section-sub" data-i18n="price.sub">Commencez gratuitement. Passez Pro quand vous le souhaitez.</p>
+  </div>
+  <div class="pricing-grid reveal" data-stagger>
+    <div class="price-card">
+      <div class="price-plan" data-i18n="plan.free.name">Gratuit</div>
+      <div class="price-amount">0<span data-i18n="plan.free.per"> €</span></div>
+      <div class="price-sub" data-i18n="plan.free.sub">Pour toujours</div>
+      <div class="price-divider"></div>
+      <ul class="price-features">
+        <li data-i18n="plan.free.f1">Accès à toutes vos sources</li>
+        <li data-i18n="plan.free.f2">IPTV M3U &amp; Xtream</li>
+        <li data-i18n="plan.free.f3">Plex, Jellyfin, Emby</li>
+        <li data-i18n="plan.free.f4">1 profil</li>
+      </ul>
+      <button class="btn-price btn-price-outline" data-i18n="plan.free.cta">Télécharger gratuitement</button>
+    </div>
+    <div class="price-card featured">
+      <div class="price-plan spectrum-text" data-i18n="plan.monthly.name">Pro Mensuel</div>
+      <div class="price-amount"><sup>€</sup>1<span data-i18n="plan.monthly.per">,99 / mois</span></div>
+      <div class="price-sub" data-i18n="plan.monthly.sub">Sans engagement</div>
+      <div class="price-divider"></div>
+      <ul class="price-features">
+        <li data-i18n="plan.pro.f1">Tout le plan Gratuit</li>
+        <li data-i18n="plan.pro.f2">Jusqu'à 5 profils</li>
+        <li data-i18n="plan.pro.f3">Sous-titres IA (Groq / Gemini)</li>
+        <li data-i18n="plan.pro.f4">Sync Cloud multi-appareils</li>
+        <li data-i18n="plan.pro.f5">Lecture à distance</li>
+        <li data-i18n="plan.pro.f6">Filtres &amp; tri avancés</li>
+      </ul>
+      <button class="btn-price btn-price-gradient" data-i18n="plan.monthly.cta">Commencer</button>
+    </div>
+    <div class="price-card featured">
+      <div class="price-badge" data-i18n="plan.annual.badge">Meilleure valeur</div>
+      <div class="price-plan spectrum-text" data-i18n="plan.annual.name">Pro Annuel</div>
+      <div class="price-amount"><sup>€</sup>11<span data-i18n="plan.annual.per">,99 / an</span></div>
+      <div class="price-sub" data-i18n="plan.annual.sub">≈ 1 € / mois · 6 mois offerts</div>
+      <div class="price-divider"></div>
+      <ul class="price-features">
+        <li data-i18n="plan.pro.f1">Tout le plan Gratuit</li>
+        <li data-i18n="plan.pro.f2">Jusqu'à 5 profils</li>
+        <li data-i18n="plan.pro.f3">Sous-titres IA (Groq / Gemini)</li>
+        <li data-i18n="plan.pro.f4">Sync Cloud multi-appareils</li>
+        <li data-i18n="plan.pro.f5">Lecture à distance</li>
+        <li data-i18n="plan.annual.f6">Priorité support</li>
+      </ul>
+      <button class="btn-price btn-price-gradient" data-i18n="plan.annual.cta">Économiser maintenant</button>
+    </div>
+    <div class="price-card">
+      <div class="price-badge" data-i18n="plan.lifetime.badge">Meilleure offre</div>
+      <div class="price-plan spectrum-text" data-i18n="plan.lifetime.name">Pro À Vie</div>
+      <div class="price-amount"><sup>€</sup>29<span data-i18n="plan.lifetime.per">,99 une fois</span></div>
+      <div class="price-sub" data-i18n="plan.lifetime.sub">Payez une fois, profitez à vie</div>
+      <div class="price-divider"></div>
+      <ul class="price-features">
+        <li data-i18n="plan.pro.f1">Tout le plan Gratuit</li>
+        <li data-i18n="plan.pro.f2">Jusqu'à 5 profils</li>
+        <li data-i18n="plan.pro.f3">Sous-titres IA (Groq / Gemini)</li>
+        <li data-i18n="plan.pro.f4">Sync Cloud multi-appareils</li>
+        <li data-i18n="plan.lifetime.f5">Toutes les futures fonctionnalités</li>
+        <li data-i18n="plan.lifetime.f6">Support prioritaire à vie</li>
+      </ul>
+      <button class="btn-price btn-price-gradient" data-i18n="plan.lifetime.cta">Posséder à vie</button>
+      <p class="price-note" style="font-size:12px;color:var(--c-text3);text-align:center;margin-top:14px;" data-i18n="plan.lifetime.note">Paiement unique · Pas d'abonnement</p>
+    </div>
+  </div>
+  <p class="pricing-note reveal" data-i18n="price.note">L'application est disponible gratuitement. Les fonctionnalités Pro sont optionnelles.</p>
+</section>
+
+<!-- ===== ACCOUNT ===== -->
+<section id="account" data-screen-label="Account">
+  <div class="reveal">
+    <div class="eyebrow"><span data-i18n="acc.eyebrow">Mon Espace</span></div>
+    <h2 class="section-title" data-i18n="acc.title">Gérez votre compte</h2>
+    <p class="section-sub" data-i18n="acc.sub">Connectez-vous pour accéder à vos profils, gérer vos appareils et choisir votre formule Pro.</p>
+  </div>
+  <div class="account-grid reveal">
+    <div class="account-panel" id="auth-panel">
+      <div class="account-panel-title" data-i18n="acc.login.title">Connexion MegaTv Cloud</div>
+      <div class="account-panel-sub" data-i18n="acc.login.sub">Accédez à vos profils et synchronisez vos appareils.</div>
+      <div id="login-form">
+        <div class="field"><label data-i18n="acc.email">Adresse email</label><input type="email" id="acc-email" placeholder="vous@email.com"></div>
+        <div class="field"><label data-i18n="acc.password">Mot de passe</label><input type="password" id="acc-password" placeholder="••••••••"></div>
+        <div id="login-status"></div>
+        <button class="btn-price btn-price-gradient" style="margin-top:4px;" onclick="handleAccountLogin()" data-i18n="acc.login.btn">Se connecter</button>
+      </div>
+      <div class="user-panel" id="user-panel">
+        <div class="user-avatar-row">
+          <div class="user-avatar-img" id="user-avatar-initials">?</div>
+          <div><div class="user-name" id="user-name-display">—</div><div class="user-email" id="user-email-display">—</div></div>
         </div>
-    </header>
-
-    <!-- 3. ZONE CENTRALE DE CONTENU -->
-    <main class="w-full max-w-7xl mx-auto px-6 flex items-center justify-center flex-1 relative z-10 py-6">
-        <div class="w-full flex flex-col lg:flex-row items-center gap-12 lg:gap-16">
-            
-            <!-- Colonne Gauche : Description de l'app et Arguments clés -->
-            <div class="flex-1 text-center lg:text-left space-y-6 lg:max-w-xl">
-                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-zinc-900/80 border border-zinc-800 text-zinc-400 text-xs font-semibold">
-                    <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span> Service Actif
-                </div>
-                <h2 class="text-4xl sm:text-5xl font-black tracking-tight leading-none bg-gradient-to-r from-white via-zinc-200 to-zinc-500 bg-clip-text text-transparent">
-                    Votre cinéma,<br>partout avec vous.
-                </h2>
-                <p class="text-zinc-400 text-sm sm:text-base leading-relaxed">
-                    MegaTv Cloud sauvegarde intelligemment vos préférences et synchronise votre expérience multimédia en temps réel. Connectez vos appareils en scannant un simple code.
-                </p>
-
-                <!-- Arguments de valeur visuels -->
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-4 text-left">
-                    <div class="flex items-center gap-3 p-3 rounded-2xl bg-zinc-900/40 border border-zinc-900">
-                        <span class="text-xl">🔄</span>
-                        <div>
-                            <h4 class="text-white text-xs font-bold">Synchro instantanée</h4>
-                            <p class="text-[10px] text-zinc-500">Reprenez la lecture sur n'importe quel écran.</p>
-                        </div>
-                    </div>
-                    <div class="flex items-center gap-3 p-3 rounded-2xl bg-zinc-900/40 border border-zinc-900">
-                        <span class="text-xl">👥</span>
-                        <div>
-                            <h4 class="text-white text-xs font-bold">Multi-Profils</h4>
-                            <p class="text-[10px] text-zinc-500">Préférences et codes PIN individuels.</p>
-                        </div>
-                    </div>
-                    <div class="flex items-center gap-3 p-3 rounded-2xl bg-zinc-900/40 border border-zinc-900">
-                        <span class="text-xl">⭐</span>
-                        <div>
-                            <h4 class="text-white text-xs font-bold">Favoris & Filtres</h4>
-                            <p class="text-[10px] text-zinc-500">Sauvegarde automatique de vos listes.</p>
-                        </div>
-                    </div>
-                    <div class="flex items-center gap-3 p-3 rounded-2xl bg-zinc-900/40 border border-zinc-900">
-                        <span class="text-xl">🛠️</span>
-                        <div>
-                            <h4 class="text-white text-xs font-bold">Addons Cloud</h4>
-                            <p class="text-[10px] text-zinc-500">Installez et configurez une fois pour toutes.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Colonne Droite : Formulaire d'authentification et de Jumelage -->
-            <div class="w-full max-w-md bg-zinc-900/70 border border-zinc-800/80 backdrop-blur-xl p-8 rounded-3xl shadow-2xl relative">
-                
-                <!-- En-tête de jumelage en cas de présence de code de TV dans l'URL -->
-                <div id="pairing-header" class="hidden mb-6 p-4 rounded-2xl bg-gradient-to-tr from-zinc-800 to-zinc-900 border border-zinc-700/50 flex items-center justify-between">
-                    <div class="flex items-center gap-3">
-                        <span class="text-2xl animate-pulse">📺</span>
-                        <div class="text-left">
-                            <h4 class="text-xs font-bold text-white">Jumelage TV initié</h4>
-                            <p class="text-[10px] text-zinc-400">Votre TV sera liée après authentification</p>
-                        </div>
-                    </div>
-                    <span id="display-pair-code" class="px-3 py-1 bg-white text-black font-black text-xs rounded-full font-mono tracking-widest">-</span>
-                </div>
-
-                <!-- A. Formulaire de connexion et inscription (Hors Session) -->
-                <div id="auth-flow" class="space-y-6">
-                    <!-- Onglets (Connexion / Inscription) -->
-                    <div class="flex p-1 bg-zinc-950/80 border border-zinc-800 rounded-full">
-                        <button onclick="switchTab('login')" id="tab-login" class="flex-1 py-2 rounded-full text-xs font-bold transition duration-200 bg-white text-black">
-                            Connexion
-                        </button>
-                        <button onclick="switchTab('register')" id="tab-register" class="flex-1 py-2 rounded-full text-xs font-bold text-zinc-400 hover:text-white transition duration-200">
-                            Créer un compte
-                        </button>
-                    </div>
-
-                    <!-- Authentification Google (Social OAuth) -->
-                    <button onclick="handleGoogleLogin()" class="w-full py-3 px-4 rounded-full bg-zinc-950 border border-zinc-800 hover:border-zinc-700 hover:bg-zinc-900/80 flex items-center justify-center gap-3 font-semibold text-xs transition duration-300">
-                        <svg class="w-4 h-4" viewBox="0 0 24 24" width="24" height="24" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
-                            <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
-                            <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z" fill="#FBBC05"/>
-                            <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
-                        </svg>
-                        Continuer avec Google
-                    </button>
-
-                    <div class="flex items-center gap-3 my-2">
-                        <span class="h-px bg-zinc-800 flex-1"></span>
-                        <span class="text-[10px] text-zinc-500 uppercase tracking-wider font-semibold">ou par email</span>
-                        <span class="h-px bg-zinc-800 flex-1"></span>
-                    </div>
-
-                    <!-- Champs de formulaires -->
-                    <div class="space-y-4">
-                        <div>
-                            <input type="email" id="email" placeholder="Adresse Email" class="w-full px-5 py-3 rounded-full bg-zinc-950/80 border border-zinc-800 focus:border-zinc-500 focus:outline-none transition text-sm">
-                        </div>
-                        <div id="password-field">
-                            <input type="password" id="password" placeholder="Mot de passe" class="w-full px-5 py-3 rounded-full bg-zinc-950/80 border border-zinc-800 focus:border-zinc-500 focus:outline-none transition text-sm">
-                        </div>
-                        <div id="confirm-password-field" class="hidden">
-                            <input type="password" id="password-confirm" placeholder="Confirmer le mot de passe" class="w-full px-5 py-3 rounded-full bg-zinc-950/80 border border-zinc-800 focus:border-zinc-500 focus:outline-none transition text-sm">
-                        </div>
-
-                        <div class="flex justify-between items-center px-2">
-                            <!-- Option mot de passe oublié -->
-                            <button onclick="switchTab('reset')" id="link-forgot" class="text-xs text-zinc-400 hover:text-white transition duration-200">
-                                Mot de passe oublié ?
-                            </button>
-                        </div>
-
-                        <!-- Bouton principal d'action -->
-                        <button onclick="handlePrimaryAction()" id="btn-primary" class="w-full py-3.5 mt-2 rounded-full bg-white text-black font-black text-sm hover:bg-zinc-200 transition duration-300 shadow-lg shadow-white/5 flex items-center justify-center gap-2">
-                            <span id="btn-text">Se connecter et jumeler</span>
-                            <!-- Loading spinner -->
-                            <span id="btn-spinner" class="hidden w-4 h-4 border-2 border-zinc-800 border-t-transparent rounded-full animate-spin"></span>
-                        </button>
-                    </div>
-                </div>
-
-                <!-- B. Vue de Session Active (Jumelage Direct ou Déconnexion) -->
-                <div id="session-flow" class="hidden space-y-6">
-                    <div class="text-center space-y-2">
-                        <div class="w-12 h-12 rounded-full bg-green-950 border border-green-800 text-green-400 flex items-center justify-center mx-auto text-xl">✓</div>
-                        <h3 class="text-lg font-bold text-white">Connexion Cloud Active</h3>
-                        <p class="text-xs text-zinc-400">Connecté en tant que <span id="session-email" class="text-white font-semibold">...</span></p>
-                    </div>
-
-                    <div id="session-pairing-actions" class="hidden p-4 rounded-2xl bg-zinc-900 border border-zinc-800 space-y-4">
-                        <div class="text-center">
-                            <p class="text-xs text-zinc-400">Tu as initié un jumelage avec le code :</p>
-                            <h4 id="session-pair-code" class="text-2xl font-black tracking-widest text-white mt-1">-</h4>
-                        </div>
-                        <button onclick="confirmActivePairing()" id="btn-confirm-pair" class="w-full py-3 rounded-full bg-green-500 text-black font-black text-xs hover:bg-green-400 transition duration-300 flex items-center justify-center gap-2">
-                            <span>Jumeler cet appareil</span>
-                            <span id="pair-spinner" class="hidden w-4 h-4 border-2 border-zinc-800 border-t-transparent rounded-full animate-spin"></span>
-                        </button>
-                    </div>
-
-                    <div class="space-y-3">
-                        <button onclick="handleLogout()" class="w-full py-3 rounded-full bg-zinc-950 border border-zinc-800 hover:border-zinc-700 hover:bg-zinc-900/60 font-semibold text-xs text-red-400 hover:text-red-300 transition duration-300">
-                            Se déconnecter
-                        </button>
-                    </div>
-                </div>
-
-                <!-- C. Toast d'information & Status -->
-                <div id="status-message" class="hidden mt-4 text-xs font-semibold p-3.5 rounded-2xl border text-center transition duration-300"></div>
-
-            </div>
+        <div style="margin-bottom:16px;">
+          <div class="section-label" data-i18n="acc.devices">Appareils jumelés</div>
+          <div class="devices-list" id="devices-list">
+            <div class="device-row"><span class="device-icon">📱</span><div class="device-info"><div class="device-name" data-i18n="acc.loading">Chargement...</div><div class="device-detail">—</div></div><div class="device-status inactive"></div></div>
+          </div>
         </div>
-    </main>
+        <button class="btn-ghost" onclick="handleLogout()" style="width:100%;justify-content:center;" data-i18n="acc.logout">Se déconnecter</button>
+      </div>
+    </div>
+    <div class="account-panel" id="profiles-panel">
+      <div class="account-panel-title" data-i18n="acc.profiles.title">Mes Profils</div>
+      <div class="account-panel-sub" data-i18n="acc.profiles.sub">Connectez-vous pour voir et gérer vos profils.</div>
+      <div class="profiles-manage-list" id="profiles-manage-list">
+        <div style="text-align:center;padding:40px;color:var(--c-text3);font-size:14px;" data-i18n="acc.profiles.empty">Connectez-vous pour voir vos profils</div>
+      </div>
+    </div>
+  </div>
+</section>
 
-    <!-- 4. BANDEAU DE DÉFILEMENT HORIZONTAL DES AVANTAGES (MARQUEE) -->
-    <footer class="w-full bg-zinc-900/40 border-t border-zinc-900 py-4 relative z-10 overflow-hidden">
-        <div class="marquee-inner flex items-center gap-12 text-xs font-semibold tracking-wide text-zinc-400">
-            <!-- Set 1 -->
-            <div class="flex items-center gap-3"><span>📺</span> <span>Synchronisation TV &amp; Mobile instantanée</span></div>
-            <div class="flex items-center gap-3"><span>👥</span> <span>Multi-profils indépendants avec codes PIN</span></div>
-            <div class="flex items-center gap-3"><span>🍿</span> <span>Reprise de lecture (Continue Watching) sur tous les écrans</span></div>
-            <div class="flex items-center gap-3"><span>⭐</span> <span>Favoris IPTV et chaînes préférées partagés</span></div>
-            <div class="flex items-center gap-3"><span>🛠️</span> <span>Sauvegarde automatique des addons et listes M3U</span></div>
-            <div class="flex items-center gap-3"><span>🔒</span> <span>Sécurité de vos préférences et accès cloud</span></div>
-            <!-- Set 2 (Duplicates for seamless loop) -->
-            <div class="flex items-center gap-3"><span>📺</span> <span>Synchronisation TV &amp; Mobile instantanée</span></div>
-            <div class="flex items-center gap-3"><span>👥</span> <span>Multi-profils indépendants avec codes PIN</span></div>
-            <div class="flex items-center gap-3"><span>🍿</span> <span>Reprise de lecture (Continue Watching) sur tous les écrans</span></div>
-            <div class="flex items-center gap-3"><span>⭐</span> <span>Favoris IPTV et chaînes préférées partagés</span></div>
-            <div class="flex items-center gap-3"><span>🛠️</span> <span>Sauvegarde automatique des addons et listes M3U</span></div>
-            <div class="flex items-center gap-3"><span>🔒</span> <span>Sécurité de vos préférences et accès cloud</span></div>
-        </div>
-    </footer>
+<!-- ===== LEGAL ===== -->
+<div class="legal reveal">
+  <p data-i18n="legal.text">MegaTv est un lecteur et navigateur média. Aucun film, série, chaîne ou flux n'est fourni par l'application. L'utilisateur configure ses propres services et playlists et reste responsable de leur utilisation conformément à la loi en vigueur dans son pays.</p>
+</div>
 
-    <!-- 5. LOGIQUE CLIENT SUPABASE -->
-    <script>
-        const SUPABASE_URL = "https://lciimaytmryruyooktkd.supabase.co";
-        const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxjaWltYXl0bXJ5cnV5b29rdGtkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkzNTEwNDAsImV4cCI6MjA5NDkyNzA0MH0.xj8ITmbNeKLShcdKcqvpy--V8B7EcBHkWGkNaENjilI";
-        const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+<!-- ===== FOOTER ===== -->
+<footer>
+  <div class="footer-top">
+    <div class="footer-brand">
+      <img class="logo-dark" src="assets/logo.png" alt="MegaTv">
+      <img class="logo-light" src="assets/logo-light.png" alt="MegaTv">
+      <p data-i18n="footer.desc">Films, séries et TV en direct. Une seule app, toutes vos sources.</p>
+    </div>
+    <div class="footer-col">
+      <div class="footer-col-title" data-i18n="footer.app">Application</div>
+      <ul>
+        <li><a href="#features" data-i18n="nav.features">Fonctionnalités</a></li>
+        <li><a href="#pricing" data-i18n="nav.pricing">Tarifs</a></li>
+        <li><a href="#pricing" data-i18n="footer.download">Télécharger</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <div class="footer-col-title" data-i18n="footer.legal">Légal</div>
+      <ul>
+        <li><a href="#" data-i18n="footer.privacy">Politique de confidentialité</a></li>
+        <li><a href="#" data-i18n="footer.terms">CGU</a></li>
+        <li><a href="#" data-i18n="footer.contact">Contact</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span data-i18n="footer.copy">© 2026 MegaTv. Tous droits réservés.</span>
+    <span>Made with <span class="footer-heart">♥</span> for the community</span>
+  </div>
+</footer>
 
-        // Analyse de l'URL pour le code de jumelage TV
-        const urlParams = new URLSearchParams(window.location.search);
-        let tvCode = (urlParams.get('code') || localStorage.getItem("pending_tv_code") || "").trim().toUpperCase();
+<!-- tweaks mount -->
+<div id="tweaks-root"></div>
 
-        let currentFlow = "login"; // "login" | "register" | "reset"
-
-        // Initialisation de la page
-        document.addEventListener("DOMContentLoaded", () => {
-            initUi();
-            checkSession();
-        });
-
-        function initUi() {
-            if (tvCode) {
-                // Révèle l'en-tête de jumelage
-                document.getElementById('pairing-header').classList.remove('hidden');
-                document.getElementById('display-pair-code').innerText = tvCode;
-                document.getElementById('session-pair-code').innerText = tvCode;
-            }
-            switchTab(currentFlow);
-        }
-
-        // Vérification de la session active
-        async function checkSession() {
-            const { data: { session }, error } = await supabaseClient.auth.getSession();
-            if (error || !session) {
-                document.getElementById('auth-flow').classList.remove('hidden');
-                document.getElementById('session-flow').classList.add('hidden');
-            } else {
-                document.getElementById('auth-flow').classList.add('hidden');
-                document.getElementById('session-flow').classList.remove('hidden');
-                document.getElementById('session-email').innerText = session.user.email;
-
-                if (tvCode) {
-                    if (localStorage.getItem("pending_tv_code") === tvCode) {
-                        localStorage.removeItem("pending_tv_code");
-                        showStatus("Connexion réussie, jumelage en cours...", "bg-zinc-900/60 text-zinc-300 border-zinc-800");
-                        try {
-                            await pairDevice(session, session.user.id, session.user.email);
-                            showStatus("✓ TV connectée avec succès ! Tu peux fermer cette page.", "bg-green-950/80 text-green-400 border-green-900/50");
-                            setTimeout(() => {
-                                window.history.replaceState({}, document.title, window.location.pathname);
-                                tvCode = "";
-                                initUi();
-                                checkSession();
-                            }, 3000);
-                        } catch (err) {
-                            showStatus(err.message || "Le jumelage a échoué.", "bg-red-950/70 text-red-400 border-red-900/50");
-                        }
-                    } else {
-                        document.getElementById('session-pairing-actions').classList.remove('hidden');
-                    }
-                } else {
-                    document.getElementById('session-pairing-actions').classList.add('hidden');
-                }
-            }
-        }
-
-        // Basculement entre les formulaires
-        function switchTab(flow) {
-            currentFlow = flow;
-            hideStatus();
-
-            const tabLogin = document.getElementById('tab-login');
-            const tabRegister = document.getElementById('tab-register');
-            const confirmField = document.getElementById('confirm-password-field');
-            const passwordField = document.getElementById('password-field');
-            const forgotLink = document.getElementById('link-forgot');
-            const btnText = document.getElementById('btn-text');
-
-            // Reset tab styles
-            tabLogin.className = "flex-1 py-2 rounded-full text-xs font-bold transition duration-200 text-zinc-400 hover:text-white";
-            tabRegister.className = "flex-1 py-2 rounded-full text-xs font-bold transition duration-200 text-zinc-400 hover:text-white";
-
-            if (flow === 'login') {
-                tabLogin.className = "flex-1 py-2 rounded-full text-xs font-bold transition duration-200 bg-white text-black";
-                confirmField.classList.add('hidden');
-                passwordField.classList.remove('hidden');
-                forgotLink.classList.remove('hidden');
-                btnText.innerText = tvCode ? "Se connecter et jumeler" : "Se connecter";
-            } else if (flow === 'register') {
-                tabRegister.className = "flex-1 py-2 rounded-full text-xs font-bold transition duration-200 bg-white text-black";
-                confirmField.classList.remove('hidden');
-                passwordField.classList.remove('hidden');
-                forgotLink.classList.add('hidden');
-                btnText.innerText = tvCode ? "S'inscrire et jumeler" : "S'inscrire";
-            } else if (flow === 'reset') {
-                confirmField.classList.add('hidden');
-                passwordField.classList.add('hidden');
-                forgotLink.classList.add('hidden');
-                btnText.innerText = "Réinitialiser mon mot de passe";
-            }
-        }
-
-        // Chargement visuel du bouton
-        function setBusy(on) {
-            const btnSpinner = document.getElementById('btn-spinner');
-            const pairSpinner = document.getElementById('pair-spinner');
-            const primaryBtn = document.getElementById('btn-primary');
-            const confirmBtn = document.getElementById('btn-confirm-pair');
-
-            if (on) {
-                btnSpinner.classList.remove('hidden');
-                pairSpinner.classList.remove('hidden');
-                if (primaryBtn) primaryBtn.disabled = true;
-                if (confirmBtn) confirmBtn.disabled = true;
-            } else {
-                btnSpinner.classList.add('hidden');
-                pairSpinner.classList.add('hidden');
-                if (primaryBtn) primaryBtn.disabled = false;
-                if (confirmBtn) confirmBtn.disabled = false;
-            }
-        }
-
-        // Actions d'authentification principales
-        async function handlePrimaryAction() {
-            const email = document.getElementById('email').value.trim();
-            const password = document.getElementById('password').value;
-            const passwordConfirm = document.getElementById('password-confirm').value;
-
-            if (!email) {
-                showStatus("Veuillez saisir votre adresse email.", "bg-red-950/70 text-red-400 border-red-900/50");
-                return;
-            }
-
-            setBusy(true);
-            hideStatus();
-
-            try {
-                if (currentFlow === 'login') {
-                    // Connexion par mot de passe
-                    const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
-                    if (error) throw error;
-                    
-                    if (tvCode) {
-                        showStatus("Connexion réussie, jumelage en cours...", "bg-zinc-900/60 text-zinc-300 border-zinc-800");
-                        await pairDevice(data.session, data.user.id, data.user.email);
-                        showStatus("✓ TV connectée avec succès ! Redirection...", "bg-green-950/80 text-green-400 border-green-900/50");
-                    } else {
-                        showStatus("✓ Connecté avec succès !", "bg-green-950/80 text-green-400 border-green-900/50");
-                    }
-                    setTimeout(() => { checkSession(); }, 1200);
-
-                } else if (currentFlow === 'register') {
-                    // Inscription
-                    if (password !== passwordConfirm) {
-                        throw new Error("Les mots de passe ne correspondent pas.");
-                    }
-                    if (password.length < 6) {
-                        throw new Error("Le mot de passe doit contenir au moins 6 caractères.");
-                    }
-
-                    const { data, error } = await supabaseClient.auth.signUp({ 
-                        email, 
-                        password,
-                        options: {
-                            emailRedirectTo: window.location.origin
-                        }
-                    });
-                    if (error) throw error;
-
-                    if (data.session) {
-                        if (tvCode) {
-                            showStatus("Compte créé, jumelage en cours...", "bg-zinc-900/60 text-zinc-300 border-zinc-800");
-                            await pairDevice(data.session, data.user.id, data.user.email);
-                            showStatus("✓ TV connectée avec succès ! Redirection...", "bg-green-950/80 text-green-400 border-green-900/50");
-                        } else {
-                            showStatus("✓ Compte créé avec succès !", "bg-green-950/80 text-green-400 border-green-900/50");
-                        }
-                        setTimeout(() => { checkSession(); }, 1200);
-                    } else {
-                        showStatus("✓ Inscription réussie ! Veuillez vérifier vos e-mails pour confirmer votre compte.", "bg-green-950/80 text-green-400 border-green-900/50");
-                    }
-
-                } else if (currentFlow === 'reset') {
-                    // Envoi de l'email de réinitialisation
-                    const { error } = await supabaseClient.auth.resetPasswordForEmail(email, {
-                        redirectTo: `${window.location.origin}/#type=recovery`
-                    });
-                    if (error) throw error;
-                    showStatus("✓ E-mail de réinitialisation envoyé ! Vérifiez votre boîte de réception.", "bg-green-950/80 text-green-400 border-green-900/50");
-                }
-            } catch (err) {
-                showStatus(err.message || "Une erreur est survenue.", "bg-red-950/70 text-red-400 border-red-900/50");
-            } finally {
-                setBusy(false);
-            }
-        }
-
-        // Authentification Google
-        async function handleGoogleLogin() {
-            setBusy(true);
-            hideStatus();
-            try {
-                if (tvCode) {
-                    localStorage.setItem("pending_tv_code", tvCode);
-                }
-                const targetRedirectUrl = window.location.origin + window.location.pathname;
-                console.log("OAuth Redirect Target URL:", targetRedirectUrl);
-                const { error } = await supabaseClient.auth.signInWithOAuth({
-                    provider: 'google',
-                    options: {
-                        redirectTo: targetRedirectUrl
-                    }
-                });
-                if (error) throw error;
-            } catch (err) {
-                showStatus(err.message || "Échec de connexion Google.", "bg-red-950/70 text-red-400 border-red-900/50");
-                setBusy(false);
-            }
-        }
-
-        // Jumelage de l'appareil (TV)
-        async function pairDevice(session, userId, email) {
-            console.log("Starting pairDevice. Session status:", !!session);
-            if (!session) {
-                throw new Error("Session invalide. Veuillez vous reconnecter.");
-            }
-
-            const tokenToSend = session.access_token;
-            const refreshToSend = session.refresh_token || "";
-            console.log("Tokens for pairing - Access Token length:", tokenToSend?.length, "Refresh Token length:", refreshToSend?.length);
-            if (!refreshToSend) {
-                console.warn("Warning: session.refresh_token is missing! We will send an empty string, the edge function status checks should handle this.");
-            }
-
-            // Utilise uniquement l'Edge Function tv-auth-approve qui est le seul canal sécurisé.
-            // Les écritures directes échoueront silencieusement en raison des politiques RLS restrictives.
-            const resp = await fetch(`${SUPABASE_URL}/functions/v1/tv-auth-approve`, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    apikey: SUPABASE_ANON_KEY,
-                    Authorization: `Bearer ${tokenToSend}`,
-                },
-                body: JSON.stringify({ 
-                    code: tvCode, 
-                    refresh_token: refreshToSend 
-                }),
-            });
-
-            const json = await resp.json().catch(() => ({}));
-            if (!resp.ok) {
-                console.error("Pairing API error response:", json);
-                throw new Error(json.error || "Le code de jumelage TV est invalide ou expiré.");
-            }
-            console.log("Pairing API success response:", json);
-            return true;
-        }
-
-        // Confirmer le jumelage si déjà connecté
-        async function confirmActivePairing() {
-            setBusy(true);
-            hideStatus();
-            try {
-                const { data: { session }, error: sError } = await supabaseClient.auth.getSession();
-                if (sError || !session) throw new Error("Session expirée. Veuillez vous reconnecter.");
-
-                await pairDevice(session, session.user.id, session.user.email);
-                showStatus("✓ TV connectée avec succès ! Tu peux fermer cette page.", "bg-green-950/80 text-green-400 border-green-900/50");
-                setTimeout(() => {
-                    // Supprime le code TV de l'URL pour rafraîchir l'affichage
-                    window.history.replaceState({}, document.title, window.location.pathname);
-                    tvCode = "";
-                    initUi();
-                    checkSession();
-                }, 2000);
-            } catch (err) {
-                showStatus(err.message || "Le jumelage a échoué.", "bg-red-950/70 text-red-400 border-red-900/50");
-            } finally {
-                setBusy(false);
-            }
-        }
-
-        // Déconnexion
-        async function handleLogout() {
-            hideStatus();
-            await supabaseClient.auth.signOut();
-            checkSession();
-        }
-
-        // Afficher les statuts informatifs
-        function showStatus(text, classes) {
-            const status = document.getElementById('status-message');
-            status.className = `mt-4 text-xs font-semibold p-3.5 rounded-2xl border text-center transition duration-300 ${classes}`;
-            status.innerText = text;
-            status.classList.remove('hidden');
-        }
-
-        function hideStatus() {
-            document.getElementById('status-message').classList.add('hidden');
-        }
-    </script>
+<!-- ===== SCRIPTS ===== -->
+<script>
+// build marquee items (no emoji — spectrum dots)
+(function(){
+  const items = [
+    ['m.films','Films & Séries'],['m.iptv','TV en Direct IPTV'],['m.android','Android TV'],
+    ['m.firetv','Fire TV Stick'],['m.mobile','Mobile'],['m.sync','Sync Multi-Appareils'],
+    ['m.profiles','Profils Familiaux'],['m.ai','Sous-titres IA'],[null,'4K · HDR · Dolby Vision'],
+    [null,'Trakt · Plex · Jellyfin · Emby']
+  ];
+  const one = items.map(([k,txt])=>`<span class="marquee-item">${k?`<span data-i18n="${k}">${txt}</span>`:txt}<span class="d"></span></span>`).join('');
+  document.getElementById('marquee').innerHTML = one + one;
+})();
+</script>
+<script src="app.js"></script>
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script type="text/babel" src="tweaks-panel.jsx"></script>
+<script type="text/babel" src="tweaks-app.jsx"></script>
 </body>
 </html>
