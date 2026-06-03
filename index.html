@@ -345,19 +345,21 @@ async function handleSubmit(){
 
   setLoading(true); hideStatus();
 
-  if(mode === 'signup'){
-    const { data, error } = await sb.auth.signUp({ email, password });
-    if(error){ setLoading(false); showStatus("Inscription impossible : " + error.message, "error"); return; }
-    if(data.session && data.user){ await completePairing(data.user); return; }
-    // email confirmation required
-    setLoading(false);
-    showStatus("Compte créé ✓ Vérifie ta boîte mail pour confirmer, puis reviens sur cette page pour jumeler ta TV.", "info");
-    return;
-  }
+  const { data, error } = await sb.functions.invoke('tv-auth-complete', {
+    body: {
+      code: tvCode,
+      email: email,
+      password: password,
+      intent: mode
+    }
+  });
 
-  const { data, error } = await sb.auth.signInWithPassword({ email, password });
-  if(error){ setLoading(false); showStatus("Échec de la connexion : " + error.message, "error"); return; }
-  await completePairing(data.user);
+  if(error){ setLoading(false); showStatus("Erreur : " + error.message, "error"); return; }
+  if(data && data.error){ setLoading(false); showStatus(data.error, "error"); return; }
+
+  // Authenticate locally in the browser to maintain session on the web page as well
+  await sb.auth.signInWithPassword({ email, password });
+  showDone();
 }
 
 async function handleGoogle(){
@@ -381,18 +383,24 @@ async function handleForgot(){
 async function completePairing(user){
   if(pairing) return; pairing = true;
   setLoading(true);
-  const { data, error } = await sb.from('tv_device_auth_sessions')
-    .update({
-      user_id: user.id,
-      user_email: user.email,
-      status: 'paired',
-      approved_at: new Date().toISOString()
-    })
-    .eq('user_code', tvCode)
-    .select();
+  const { data: { session } } = await sb.auth.getSession();
+  if(!session){
+    pairing = false;
+    setLoading(false);
+    showStatus("Session introuvable. Connecte-toi à nouveau.", "error");
+    return;
+  }
+
+  const { data, error } = await sb.functions.invoke('tv-auth-approve', {
+    body: {
+      code: tvCode,
+      refresh_token: session.refresh_token
+    }
+  });
+
   setLoading(false);
   if(error){ pairing = false; showStatus("Erreur de jumelage : " + error.message, "error"); return; }
-  if(!data || data.length === 0){ pairing = false; showStatus("Code de jumelage introuvable ou expiré. Relance le jumelage depuis ta TV.", "error"); return; }
+  if(data && data.error){ pairing = false; showStatus("Erreur de jumelage : " + data.error, "error"); return; }
   showDone();
 }
 
