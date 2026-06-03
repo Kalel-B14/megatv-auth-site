@@ -381,11 +381,18 @@ async function handleForgot(){
 async function completePairing(user){
   if(pairing) return; pairing = true;
   setLoading(true);
-  const { error } = await sb.from('tv_pairings')
-    .update({ user_id: user.id, status: 'paired' })
-    .eq('code', tvCode);
+  const { data, error } = await sb.from('tv_device_auth_sessions')
+    .update({
+      user_id: user.id,
+      user_email: user.email,
+      status: 'paired',
+      approved_at: new Date().toISOString()
+    })
+    .eq('user_code', tvCode)
+    .select();
   setLoading(false);
   if(error){ pairing = false; showStatus("Erreur de jumelage : " + error.message, "error"); return; }
+  if(!data || data.length === 0){ pairing = false; showStatus("Code de jumelage introuvable ou expiré. Relance le jumelage depuis ta TV.", "error"); return; }
   showDone();
 }
 
